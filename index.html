@@ -73,28 +73,45 @@
         .header h1 { font-size: 1.8rem; color: var(--text-main); margin-bottom: 6px; }
         .header p { color: var(--text-muted); font-size: 0.95rem; }
 
-        /* Container idêntico ao do seu portfólio */
-        .video-container {
-            width: 100%;
-            max-width: 960px;
-            aspect-ratio: 16/9;
-            background: #000;
-            border-radius: 12px;
-            overflow: hidden;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+        /* Player Wrapper & Inversão de Cores */
+        .player-wrapper { 
+            background: #000; 
+            border-radius: 12px; 
+            overflow: hidden; 
+            aspect-ratio: 16/9; 
+            max-width: 960px; 
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15); 
             transition: filter 0.3s ease;
         }
 
-        .video-container.video-inverted {
+        /* Inversão padrão na página */
+        .player-wrapper.video-inverted {
             filter: invert(1) hue-rotate(180deg);
         }
 
-        .video-container iframe {
-            width: 100%;
-            height: 100%;
-            border: none;
-            display: block;
+        /* Ajuste do contêiner ao entrar em Tela Cheia */
+        .player-wrapper:fullscreen {
+            max-width: 100%;
+            width: 100vw;
+            height: 100vh;
+            border-radius: 0;
         }
+        .player-wrapper:-webkit-full-screen {
+            max-width: 100%;
+            width: 100vw;
+            height: 100vh;
+            border-radius: 0;
+        }
+
+        /* Filtro Mantido em Tela Cheia */
+        .player-wrapper.video-inverted:fullscreen {
+            filter: invert(1) hue-rotate(180deg);
+        }
+        .player-wrapper.video-inverted:-webkit-full-screen {
+            filter: invert(1) hue-rotate(180deg);
+        }
+
+        iframe { width: 100%; height: 100%; border: none; }
 
         /* Resource Box */
         .resource-card { max-width: 960px; background: var(--bg-card); margin-top: 20px; padding: 20px; border-radius: 10px; border: 1px solid var(--border-card); }
@@ -110,6 +127,7 @@
             <span>🚀 Portal Estudos</span>
             <div class="header-actions">
                 <button class="theme-toggle-btn" id="invert-btn" onclick="alternarInversaoVideo()" title="Inverter Cores do Vídeo">👁️ Inverter</button>
+                <button class="theme-toggle-btn" onclick="expandirPlayer()" title="Tela Cheia">⛶ Expandir</button>
                 <button class="theme-toggle-btn" id="theme-btn" onclick="alternarTema()" title="Alternar Modo Escuro/Claro">🌙</button>
             </div>
         </div>
@@ -132,9 +150,8 @@
             <p id="video-desc">Navegue pelas opções do menu para escolher o edital, a disciplina, o tópico e a aula desejada.</p>
         </div>
 
-        <!-- Wrapper do vídeo estruturado exatamente igual ao seu portfólio -->
-        <div class="video-container" id="player-container">
-            <iframe id="youtube-player" src="" allowfullscreen></iframe>
+        <div class="player-wrapper" id="player-container">
+            <iframe id="youtube-player" src="" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; fullscreen" allowfullscreen></iframe>
         </div>
 
         <div class="resource-card">
@@ -181,6 +198,24 @@
             aplicarInversaoSalva();
         }
 
+        function expandirPlayer() {
+            const playerContainer = document.getElementById('player-container');
+            
+            if (!document.fullscreenElement) {
+                if (playerContainer.requestFullscreen) {
+                    playerContainer.requestFullscreen();
+                } else if (playerContainer.webkitRequestFullscreen) { /* Safari */
+                    playerContainer.webkitRequestFullscreen();
+                } else if (playerContainer.msRequestFullscreen) { /* IE11 */
+                    playerContainer.msRequestFullscreen();
+                }
+            } else {
+                if (document.exitFullscreen) {
+                    document.exitFullscreen();
+                }
+            }
+        }
+
         aplicarTemaSalvo();
         aplicarInversaoSalva();
 
@@ -202,7 +237,7 @@
                                         id: "enem-mat",
                                         nome: "Matemática e suas Tecnologias",
                                         topicos: [
-                                            { id: "e-1", titulo: "Razão e Proporção", youtubeId: "evXrGaI6SVc", descricao: "Proporção e regra de três.", material: "Sem material." },
+                                            { id: "e-1", titulo: "Razão e Proporção", youtubeId: "dQw4w9WgXcQ", descricao: "Proporção e regra de três.", material: "Sem material." },
                                             { id: "e-2", titulo: "Porcentagem e Juros", youtubeId: "dQw4w9WgXcQ", descricao: "Aplicações de porcentagem no ENEM.", material: "Sem material." }
                                         ]
                                     },
