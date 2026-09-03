@@ -116,7 +116,7 @@
         .header h1 { font-size: 1.8rem; color: var(--text-main); margin-bottom: 6px; }
         .header p { color: var(--text-muted); font-size: 0.95rem; }
 
-        /* Player Wrapper e Solução Cross-Platform de Inversão */
+        /* Player Wrapper */
         .player-wrapper { 
             position: relative;
             background: #000; 
@@ -126,7 +126,7 @@
             width: 100%;
             max-width: 960px; 
             box-shadow: 0 10px 25px rgba(0,0,0,0.5); 
-            transform: translateZ(0); /* Força aceleração de hardware */
+            transition: filter 0.3s ease, -webkit-filter 0.3s ease;
         }
 
         #youtube-player { 
@@ -136,24 +136,10 @@
             display: block;
         }
 
-        /* Camada Overlay para funcionar no Mobile Safari / Chrome */
-        .player-wrapper.video-inverted::after {
-            content: "";
-            position: absolute;
-            inset: 0;
-            background: rgba(255, 255, 255, 0);
-            backdrop-filter: invert(1) hue-rotate(180deg);
-            -webkit-backdrop-filter: invert(1) hue-rotate(180deg);
-            pointer-events: none; /* Permite clicar e pausar o vídeo normalmente */
-            z-index: 10;
-        }
-
-        /* Fallback de CSS Filter direto para navegadores antigos */
-        @supports not (backdrop-filter: invert(1)) {
-            .player-wrapper.video-inverted #youtube-player {
-                filter: invert(1) hue-rotate(180deg);
-                -webkit-filter: invert(1) hue-rotate(180deg);
-            }
+        /* Regra de Inversão Universal (PC e Mobile) */
+        .player-wrapper.video-inverted {
+            filter: invert(1) hue-rotate(180deg) !important;
+            -webkit-filter: invert(1) hue-rotate(180deg) !important;
         }
 
         /* Resource Box */
@@ -276,7 +262,6 @@
             icon.innerText = estaAberto ? '▼' : '▲';
         }
 
-        // Lógica de Inversão adaptada para Mobile
         function aplicarInversaoSalva() {
             const isInverted = localStorage.getItem('video_inverted') === 'true';
             const playerContainer = document.getElementById('player-container');
