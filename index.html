@@ -25,7 +25,7 @@
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; }
         body { display: flex; height: 100vh; background-color: var(--bg-body); color: var(--text-main); overflow: hidden; }
         
-        /* Barra de Topo exclusiva para Mobile */
+        /* Mobile Header */
         .mobile-header {
             display: none;
             height: 60px;
@@ -54,7 +54,6 @@
             gap: 6px;
         }
 
-        /* Overlay para Mobile (fundo escuro ao abrir menu) */
         .sidebar-overlay {
             display: none;
             position: fixed;
@@ -65,7 +64,7 @@
         }
         .sidebar-overlay.active { display: block; }
 
-        /* Sidebar Responsive */
+        /* Sidebar */
         #sidebar { 
             width: 340px; 
             background: var(--bg-sidebar); 
@@ -78,7 +77,6 @@
         }
 
         .brand { padding: 18px; font-size: 1.1rem; font-weight: bold; background: var(--bg-sidebar-header); color: var(--accent-color); border-bottom: 1px solid var(--border-menu-item); display: flex; justify-content: space-between; align-items: center; }
-        
         .brand-title { display: flex; align-items: center; gap: 8px; }
         .brand-logo { width: 2.5em; height: 2.5em; border-radius: 8px; object-fit: cover; }
 
@@ -91,7 +89,6 @@
         .btn-nav { flex: 1; padding: 10px; background: var(--bg-nav-btn); color: #fff; border: none; border-radius: 4px; cursor: pointer; font-size: 0.85rem; font-weight: 600; display: none; }
         .btn-nav:hover { opacity: 0.9; }
 
-        /* Input de Busca */
         .search-box { padding: 10px 12px; display: none; background: var(--bg-sidebar); border-bottom: 1px solid var(--border-menu-item); }
         .search-input { width: 100%; padding: 10px 12px; border-radius: 6px; border: 1px solid var(--border-menu-item); background: var(--bg-sidebar-header); color: #fff; font-size: 0.9rem; outline: none; }
         .search-input::placeholder { color: var(--text-muted); }
@@ -104,7 +101,6 @@
         
         .section-header { font-size: 0.8rem; text-transform: uppercase; color: var(--text-muted); margin: 10px 0 8px 4px; font-weight: bold; letter-spacing: 0.05em; }
 
-        /* Rodapé com Links Extras */
         .sidebar-footer-tools { background: var(--bg-sidebar-header); border-top: 1px solid var(--border-menu-item); display: flex; flex-direction: column; }
         .extra-tools-header { padding: 12px; font-size: 0.8rem; text-transform: uppercase; color: var(--accent-color); font-weight: bold; letter-spacing: 0.05em; cursor: pointer; display: flex; justify-content: space-between; align-items: center; user-select: none; transition: background 0.2s; }
         .extra-tools-header:hover { background: var(--bg-menu-item); }
@@ -120,8 +116,9 @@
         .header h1 { font-size: 1.8rem; color: var(--text-main); margin-bottom: 6px; }
         .header p { color: var(--text-muted); font-size: 0.95rem; }
 
-        /* Player Wrapper */
+        /* Player Wrapper e Solução Cross-Platform de Inversão */
         .player-wrapper { 
+            position: relative;
             background: #000; 
             border-radius: 12px; 
             overflow: hidden; 
@@ -129,20 +126,34 @@
             width: 100%;
             max-width: 960px; 
             box-shadow: 0 10px 25px rgba(0,0,0,0.5); 
+            transform: translateZ(0); /* Força aceleração de hardware */
         }
 
         #youtube-player { 
             width: 100%; 
             height: 100%; 
             border: none; 
-            transition: filter 0.3s ease;
+            display: block;
         }
 
-        /* Aplicação direta no IFRAME para não perder o efeito */
-        .player-wrapper.video-inverted #youtube-player,
-        #youtube-player.video-inverted { 
-            filter: invert(1) hue-rotate(180deg) !important; 
-            -webkit-filter: invert(1) hue-rotate(180deg) !important;
+        /* Camada Overlay para funcionar no Mobile Safari / Chrome */
+        .player-wrapper.video-inverted::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: rgba(255, 255, 255, 0);
+            backdrop-filter: invert(1) hue-rotate(180deg);
+            -webkit-backdrop-filter: invert(1) hue-rotate(180deg);
+            pointer-events: none; /* Permite clicar e pausar o vídeo normalmente */
+            z-index: 10;
+        }
+
+        /* Fallback de CSS Filter direto para navegadores antigos */
+        @supports not (backdrop-filter: invert(1)) {
+            .player-wrapper.video-inverted #youtube-player {
+                filter: invert(1) hue-rotate(180deg);
+                -webkit-filter: invert(1) hue-rotate(180deg);
+            }
         }
 
         /* Resource Box */
@@ -151,10 +162,9 @@
         .resource-card a { color: var(--accent-color); text-decoration: none; font-weight: 600; }
         .resource-card a:hover { text-decoration: underline; }
 
-        /* REGRAS MEDIA QUERY PARA MOBILE */
+        /* Media Queries Mobile */
         @media (max-width: 768px) {
             body { flex-direction: column; }
-            
             .mobile-header { display: flex; }
 
             #sidebar {
@@ -168,24 +178,17 @@
                 box-shadow: 5px 0 15px rgba(0,0,0,0.5);
             }
 
-            #sidebar.open {
-                transform: translateX(0);
-            }
-
-            #main-content {
-                padding: 75px 15px 20px 15px;
-            }
+            #sidebar.open { transform: translateX(0); }
+            #main-content { padding: 75px 15px 20px 15px; }
 
             .header h1 { font-size: 1.4rem; }
             .header p { font-size: 0.85rem; }
-            
             .menu-item { padding: 14px; }
         }
     </style>
 </head>
 <body>
 
-    <!-- Cabeçalho Mobile -->
     <div class="mobile-header">
         <button class="menu-toggle-btn" onclick="toggleSidebar()">
             <span>☰</span> Menu
@@ -195,7 +198,6 @@
         </div>
     </div>
 
-    <!-- Máscara de fundo ao abrir menu em mobile -->
     <div class="sidebar-overlay" id="sidebar-overlay" onclick="toggleSidebar()"></div>
 
     <div id="sidebar">
@@ -253,7 +255,6 @@
     </div>
 
     <script>
-        // CONTROLE DA SIDEBAR MOBILE (DRAWER)
         function toggleSidebar() {
             const sidebar = document.getElementById('sidebar');
             const overlay = document.getElementById('sidebar-overlay');
@@ -268,29 +269,24 @@
             }
         }
 
-        // FERRAMENTAS EXTRAS
         function alternarFerramentasExtras() {
             const container = document.getElementById('extra-tools-container');
             const icon = document.getElementById('extra-tools-icon');
-            
             const estaAberto = container.classList.toggle('open');
             icon.innerText = estaAberto ? '▼' : '▲';
         }
 
-        // INVERSÃO DE CORES DO VÍDEO (Aplica no Container E no Iframe)
+        // Lógica de Inversão adaptada para Mobile
         function aplicarInversaoSalva() {
             const isInverted = localStorage.getItem('video_inverted') === 'true';
             const playerContainer = document.getElementById('player-container');
-            const youtubePlayer = document.getElementById('youtube-player');
             const invertBtn = document.getElementById('invert-btn');
 
             if (isInverted) {
                 playerContainer.classList.add('video-inverted');
-                youtubePlayer.classList.add('video-inverted');
                 invertBtn.classList.add('active');
             } else {
                 playerContainer.classList.remove('video-inverted');
-                youtubePlayer.classList.remove('video-inverted');
                 invertBtn.classList.remove('active');
             }
         }
@@ -302,7 +298,6 @@
             aplicarInversaoSalva();
         }
 
-        // BASE DE DADOS
         const baseDeDados = [
             {
                 id: "enem",
@@ -434,7 +429,6 @@
             }
         ];
 
-        // ESTADOS DE NAVEGAÇÃO
         let nivelAtual = 'RAIZ';
         let catSelecionada = null;
         let subSelecionada = null;
@@ -460,14 +454,12 @@
             if (nivelAtual === 'RAIZ') {
                 btnBack.style.display = 'none';
                 btnReset.style.display = 'none';
-                
                 criarHeader('Selecione a Modalidade');
                 baseDeDados.forEach(cat => criarBotao(cat.nome, () => selecionarCategoria(cat)));
             } 
             else if (nivelAtual === 'SUBCATEGORIA') {
                 btnBack.style.display = 'block';
                 btnReset.style.display = 'block';
-
                 criarHeader(`Opções de ${catSelecionada.nome}`);
                 catSelecionada.subcategorias.forEach(sub => criarBotao(sub.nome, () => selecionarSubcategoria(sub)));
             } 
@@ -476,7 +468,6 @@
                 btnReset.style.display = 'block';
                 searchBox.style.display = 'block';
                 searchInput.placeholder = "🔍 Pesquisar concurso/vestibular...";
-
                 criarHeader(`Opções (${subSelecionada.nome})`);
                 renderizarListaConcursos(subSelecionada.concursos);
             }
@@ -485,7 +476,6 @@
                 btnReset.style.display = 'block';
                 searchBox.style.display = 'block';
                 searchInput.placeholder = "🔍 Pesquisar disciplina...";
-
                 criarHeader(`Disciplinas: ${concursoSelecionado.nome}`);
                 renderizarListaDisciplinas(concursoSelecionado.disciplinas);
             }
@@ -494,7 +484,6 @@
                 btnReset.style.display = 'block';
                 searchBox.style.display = 'block';
                 searchInput.placeholder = "🔍 Pesquisar tópico/aula...";
-
                 criarHeader(`Tópicos de ${disciplinaSelecionada.nome}`);
                 renderizarListaTopicos(disciplinaSelecionada.topicos);
             }
@@ -599,11 +588,7 @@
             titleEl.innerText = topico.titulo;
             descEl.innerText = topico.descricao;
             materialEl.innerHTML = topico.material;
-            
-            // Força a reaplicação do filtro caso a troca de URL resete o estilo
-            aplicarInversaoSalva();
 
-            // Fecha a barra lateral no mobile
             fecharSidebarMobile();
         }
 
@@ -640,7 +625,6 @@
             renderizarMenu();
         }
 
-        // Inicializa menu e tema
         renderizarMenu();
         aplicarInversaoSalva();
     </script>
