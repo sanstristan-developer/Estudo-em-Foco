@@ -27,8 +27,23 @@
         
         /* Sidebar */
         #sidebar { width: 340px; background: var(--bg-sidebar); color: #fff; display: flex; flex-direction: column; border-right: 1px solid var(--border-card); }
-        .brand { padding: 18px; font-size: 1.1rem; font-weight: bold; background: var(--bg-sidebar-header); color: var(--accent-color); text-align: center; border-bottom: 1px solid var(--border-menu-item); display: flex; justify-content: space-between; align-items: center; }
+        .brand { padding: 18px; font-size: 1.1rem; font-weight: bold; background: var(--bg-sidebar-header); color: var(--accent-color); border-bottom: 1px solid var(--border-menu-item); display: flex; justify-content: space-between; align-items: center; }
         
+        /* Agrupamento da Logo + Nome da Marca */
+        .brand-title {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* Logo do mesmo tamanho visual do texto */
+        .brand-logo {
+            width: 3em;
+            height: 3em;
+            border-radius: 8px;
+            object-fit: cover;
+        }
+
         .header-actions { display: flex; gap: 6px; }
         .theme-toggle-btn { background: none; border: 1px solid var(--border-menu-item); color: var(--accent-color); font-size: 0.9rem; padding: 5px 8px; border-radius: 6px; cursor: pointer; }
         .theme-toggle-btn:hover { background: var(--bg-nav-btn); }
@@ -162,7 +177,10 @@
 
     <div id="sidebar">
         <div class="brand">
-            <span>Estudo em Foco</span>
+            <div class="brand-title">
+                <img src="favicon.png" alt="Logo" class="brand-logo">
+                <span>Estudo em Foco</span>
+            </div>
             <div class="header-actions">
                 <button class="theme-toggle-btn" id="invert-btn" onclick="alternarInversaoVideo()" title="Inverter Cores do Vídeo">👁️ Inverter</button>
             </div>
@@ -582,3 +600,4 @@
     </script>
 </body>
 </html>
+
