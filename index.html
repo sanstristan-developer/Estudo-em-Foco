@@ -6,22 +6,6 @@
     <title>Plataforma de Estudos - ENEM, Vestibulares & Concursos</title>
     <style>
         :root {
-            --bg-body: #f8fafc;
-            --text-main: #0f172a;
-            --text-muted: #64748b;
-            --bg-sidebar: #0f172a;
-            --bg-sidebar-header: #020617;
-            --bg-nav-btn: #334155;
-            --bg-menu-item: #1e293b;
-            --border-menu-item: #334155;
-            --text-menu-item: #f8fafc;
-            --bg-card: #ffffff;
-            --border-card: #e2e8f0;
-            --accent-color: #0284c7;
-            --accent-light: #38bdf8;
-        }
-
-        [data-theme="dark"] {
             --bg-body: #0b0f19;
             --text-main: #f1f5f9;
             --text-muted: #94a3b8;
@@ -37,15 +21,15 @@
             --accent-light: #0284c7;
         }
 
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; transition: background-color 0.2s, color 0.2s; }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; }
         body { display: flex; height: 100vh; background-color: var(--bg-body); color: var(--text-main); }
         
         /* Sidebar */
         #sidebar { width: 340px; background: var(--bg-sidebar); color: #fff; display: flex; flex-direction: column; border-right: 1px solid var(--border-card); }
-        .brand { padding: 18px; font-size: 1.1rem; font-weight: bold; background: var(--bg-sidebar-header); color: var(--accent-light); text-align: center; border-bottom: 1px solid var(--border-menu-item); display: flex; justify-content: space-between; align-items: center; }
+        .brand { padding: 18px; font-size: 1.1rem; font-weight: bold; background: var(--bg-sidebar-header); color: var(--accent-color); text-align: center; border-bottom: 1px solid var(--border-menu-item); display: flex; justify-content: space-between; align-items: center; }
         
         .header-actions { display: flex; gap: 6px; }
-        .theme-toggle-btn { background: none; border: 1px solid var(--border-menu-item); color: var(--accent-light); font-size: 0.9rem; padding: 5px 8px; border-radius: 6px; cursor: pointer; }
+        .theme-toggle-btn { background: none; border: 1px solid var(--border-menu-item); color: var(--accent-color); font-size: 0.9rem; padding: 5px 8px; border-radius: 6px; cursor: pointer; }
         .theme-toggle-btn:hover { background: var(--bg-nav-btn); }
         .theme-toggle-btn.active { background: var(--accent-color); color: #fff; }
 
@@ -57,12 +41,12 @@
         .search-box { padding: 10px 12px; display: none; background: var(--bg-sidebar); border-bottom: 1px solid var(--border-menu-item); }
         .search-input { width: 100%; padding: 8px 12px; border-radius: 6px; border: 1px solid var(--border-menu-item); background: var(--bg-sidebar-header); color: #fff; font-size: 0.9rem; outline: none; }
         .search-input::placeholder { color: var(--text-muted); }
-        .search-input:focus { border-color: var(--accent-light); }
+        .search-input:focus { border-color: var(--accent-color); }
         
         .menu-content { overflow-y: auto; flex: 1; padding: 12px; }
         .menu-item { width: 100%; text-align: left; padding: 12px; background: var(--bg-menu-item); border: 1px solid var(--border-menu-item); color: var(--text-menu-item); cursor: pointer; border-radius: 6px; font-size: 0.95rem; margin-bottom: 8px; }
-        .menu-item:hover { border-color: var(--accent-light); }
-        .menu-item.active { background: var(--accent-color); border-color: var(--accent-light); color: #fff; font-weight: bold; }
+        .menu-item:hover { border-color: var(--accent-color); }
+        .menu-item.active { background: var(--accent-color); border-color: var(--accent-color); color: #000; font-weight: bold; }
         
         .section-header { font-size: 0.8rem; text-transform: uppercase; color: var(--text-muted); margin: 10px 0 8px 4px; font-weight: bold; letter-spacing: 0.05em; }
 
@@ -80,16 +64,16 @@
             overflow: hidden; 
             aspect-ratio: 16/9; 
             max-width: 960px; 
-            box-shadow: 0 10px 25px rgba(0,0,0,0.15); 
+            box-shadow: 0 10px 25px rgba(0,0,0,0.5); 
             transition: filter 0.3s ease;
         }
 
-        /* Inversão padrão na página */
+        /* Inversão no vídeo */
         .player-wrapper.video-inverted {
             filter: invert(1) hue-rotate(180deg);
         }
 
-        /* Ajuste do contêiner ao entrar em Tela Cheia */
+        /* Ajuste em Fullscreen */
         .player-wrapper:fullscreen {
             max-width: 100%;
             width: 100vw;
@@ -103,7 +87,6 @@
             border-radius: 0;
         }
 
-        /* Filtro Mantido em Tela Cheia */
         .player-wrapper.video-inverted:fullscreen {
             filter: invert(1) hue-rotate(180deg);
         }
@@ -128,7 +111,6 @@
             <div class="header-actions">
                 <button class="theme-toggle-btn" id="invert-btn" onclick="alternarInversaoVideo()" title="Inverter Cores do Vídeo">👁️ Inverter</button>
                 <button class="theme-toggle-btn" onclick="expandirPlayer()" title="Tela Cheia">⛶ Expandir</button>
-                <button class="theme-toggle-btn" id="theme-btn" onclick="alternarTema()" title="Alternar Modo Escuro/Claro">🌙</button>
             </div>
         </div>
         <div class="nav-controls">
@@ -161,22 +143,7 @@
     </div>
 
     <script>
-        // 1. GERENCIAMENTO DE TEMA
-        function aplicarTemaSalvo() {
-            const temaSalvo = localStorage.getItem('tema_plataforma') || 'light';
-            document.documentElement.setAttribute('data-theme', temaSalvo);
-            document.getElementById('theme-btn').innerText = temaSalvo === 'dark' ? '☀️' : '🌙';
-        }
-
-        function alternarTema() {
-            const temaAtual = document.documentElement.getAttribute('data-theme') || 'light';
-            const novoTema = temaAtual === 'light' ? 'dark' : 'light';
-            document.documentElement.setAttribute('data-theme', novoTema);
-            localStorage.setItem('tema_plataforma', novoTema);
-            document.getElementById('theme-btn').innerText = novoTema === 'dark' ? '☀️' : '🌙';
-        }
-
-        // 2. FILTRO DE INVERSÃO DE CORES DO VÍDEO
+        // 1. FILTRO DE INVERSÃO DE CORES DO VÍDEO
         function aplicarInversaoSalva() {
             const isInverted = localStorage.getItem('video_inverted') === 'true';
             const playerContainer = document.getElementById('player-container');
@@ -204,9 +171,9 @@
             if (!document.fullscreenElement) {
                 if (playerContainer.requestFullscreen) {
                     playerContainer.requestFullscreen();
-                } else if (playerContainer.webkitRequestFullscreen) { /* Safari */
+                } else if (playerContainer.webkitRequestFullscreen) {
                     playerContainer.webkitRequestFullscreen();
-                } else if (playerContainer.msRequestFullscreen) { /* IE11 */
+                } else if (playerContainer.msRequestFullscreen) {
                     playerContainer.msRequestFullscreen();
                 }
             } else {
@@ -216,10 +183,9 @@
             }
         }
 
-        aplicarTemaSalvo();
         aplicarInversaoSalva();
 
-        // 3. BASE DE DADOS HIERÁRQUICA
+        // 2. BASE DE DADOS HIERÁRQUICA
         const baseDeDados = [
             {
                 id: "enem",
@@ -351,7 +317,7 @@
             }
         ];
 
-        // 4. ESTADOS DE NAVEGAÇÃO
+        // 3. ESTADOS DE NAVEGAÇÃO
         let nivelAtual = 'RAIZ';
         let catSelecionada = null;
         let subSelecionada = null;
