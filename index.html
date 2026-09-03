@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Plataforma de Estudos - ENEM, Vestibulares & Concursos</title>
+    <style>
+        :root {
+            --bg-body: #f8fafc;
+            --text-main: #0f172a;
+            --text-muted: #64748b;
+            --bg-sidebar: #0f172a;
+            --bg-sidebar-header: #020617;
+            --bg-nav-btn: #334155;
+            --bg-menu-item: #1e293b;
+            --border-menu-item: #334155;
+            --text-menu-item: #f8fafc;
+            --bg-card: #ffffff;
+            --border-card: #e2e8f0;
+            --accent-color: #0284c7;
+            --accent-light: #38bdf8;
+        }
+
+        [data-theme="dark"] {
+            --bg-body: #0b0f19;
+            --text-main: #f1f5f9;
+            --text-muted: #94a3b8;
+            --bg-sidebar: #111827;
+            --bg-sidebar-header: #030712;
+            --bg-nav-btn: #1f2937;
+            --bg-menu-item: #1f2937;
+            --border-menu-item: #374151;
+            --text-menu-item: #f3f4f6;
+            --bg-card: #1f2937;
+            --border-card: #374151;
+            --accent-color: #38bdf8;
+            --accent-light: #0284c7;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; transition: background-color 0.2s, color 0.2s; }
+        body { display: flex; height: 100vh; background-color: var(--bg-body); color: var(--text-main); }
+        
+        /* Sidebar */
+        #sidebar { width: 340px; background: var(--bg-sidebar); color: #fff; display: flex; flex-direction: column; border-right: 1px solid var(--border-card); }
+        .brand { padding: 18px; font-size: 1.1rem; font-weight: bold; background: var(--bg-sidebar-header); color: var(--accent-light); text-align: center; border-bottom: 1px solid var(--border-menu-item); display: flex; justify-content: space-between; align-items: center; }
+        
+        .header-actions { display: flex; gap: 6px; }
+        .theme-toggle-btn { background: none; border: 1px solid var(--border-menu-item); color: var(--accent-light); font-size: 0.9rem; padding: 5px 8px; border-radius: 6px; cursor: pointer; }
+        .theme-toggle-btn:hover { background: var(--bg-nav-btn); }
+        .theme-toggle-btn.active { background: var(--accent-color); color: #fff; }
+
+        .nav-controls { padding: 10px; background: var(--bg-sidebar-header); display: flex; gap: 8px; }
+        .btn-nav { flex: 1; padding: 8px; background: var(--bg-nav-btn); color: #fff; border: none; border-radius: 4px; cursor: pointer; font-size: 0.85rem; font-weight: 600; display: none; }
+        .btn-nav:hover { opacity: 0.9; }
+
+        /* Input de Busca Dinâmico */
+        .search-box { padding: 10px 12px; display: none; background: var(--bg-sidebar); border-bottom: 1px solid var(--border-menu-item); }
+        .search-input { width: 100%; padding: 8px 12px; border-radius: 6px; border: 1px solid var(--border-menu-item); background: var(--bg-sidebar-header); color: #fff; font-size: 0.9rem; outline: none; }
+        .search-input::placeholder { color: var(--text-muted); }
+        .search-input:focus { border-color: var(--accent-light); }
+        
+        .menu-content { overflow-y: auto; flex: 1; padding: 12px; }
+        .menu-item { width: 100%; text-align: left; padding: 12px; background: var(--bg-menu-item); border: 1px solid var(--border-menu-item); color: var(--text-menu-item); cursor: pointer; border-radius: 6px; font-size: 0.95rem; margin-bottom: 8px; }
+        .menu-item:hover { border-color: var(--accent-light); }
+        .menu-item.active { background: var(--accent-color); border-color: var(--accent-light); color: #fff; font-weight: bold; }
+        
+        .section-header { font-size: 0.8rem; text-transform: uppercase; color: var(--text-muted); margin: 10px 0 8px 4px; font-weight: bold; letter-spacing: 0.05em; }
+
+        /* Main Area */
+        #main-content { flex: 1; display: flex; flex-direction: column; overflow-y: auto; padding: 30px; }
+        .header { margin-bottom: 20px; }
+        .breadcrumb { font-size: 0.85rem; color: var(--accent-color); font-weight: 600; margin-bottom: 8px; text-transform: uppercase; }
+        .header h1 { font-size: 1.8rem; color: var(--text-main); margin-bottom: 6px; }
+        .header p { color: var(--text-muted); font-size: 0.95rem; }
+
+        /* Player Wrapper & Inversão de Cores */
+        .player-wrapper { 
+            background: #000; 
+            border-radius: 12px; 
+            overflow: hidden; 
+            aspect-ratio: 16/9; 
+            max-width: 960px; 
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15); 
+            transition: filter 0.3s ease;
+        }
+
+        /* Classe aplicada via JS para inverter o vídeo */
+        .player-wrapper.video-inverted {
+            filter: invert(1) hue-rotate(180deg);
+        }
+
+        iframe { width: 100%; height: 100%; border: none; }
+
+        /* Resource Box */
+        .resource-card { max-width: 960px; background: var(--bg-card); margin-top: 20px; padding: 20px; border-radius: 10px; border: 1px solid var(--border-card); }
+        .resource-card h3 { margin-bottom: 8px; color: var(--text-main); font-size: 1.1rem; }
+        .resource-card a { color: var(--accent-color); text-decoration: none; font-weight: 600; }
+        .resource-card a:hover { text-decoration: underline; }
+    </style>
+</head>
+<body>
+
+    <div id="sidebar">
+        <div class="brand">
+            <span>🚀 Portal Estudos</span>
+            <div class="header-actions">
+                <button class="theme-toggle-btn" id="invert-btn" onclick="alternarInversaoVideo()" title="Inverter Cores do Vídeo">👁️ Inverter</button>
+                <button class="theme-toggle-btn" id="theme-btn" onclick="alternarTema()" title="Alternar Modo Escuro/Claro">🌙</button>
+            </div>
+        </div>
+        <div class="nav-controls">
+            <button id="btn-back" class="btn-nav" onclick="voltarNivel()">← Voltar</button>
+            <button id="btn-reset" class="btn-nav" onclick="resetarNavegacao()">Início</button>
+        </div>
+        
+        <div class="search-box" id="search-box">
+            <input type="text" id="search-input" class="search-input" placeholder="🔍 Pesquisar..." oninput="executarFiltro()">
+        </div>
+
+        <div class="menu-content" id="menu-container"></div>
+    </div>
+
+    <div id="main-content">
+        <div class="header">
+            <div id="breadcrumb" class="breadcrumb">Selecione uma categoria</div>
+            <h1 id="video-title">Bem-vindo à Plataforma</h1>
+            <p id="video-desc">Navegue pelas opções do menu para escolher o edital, a disciplina, o tópico e a aula desejada.</p>
+        </div>
+
+        <div class="player-wrapper" id="player-container">
+            <iframe id="youtube-player" src="" allowfullscreen></iframe>
+        </div>
+
+        <div class="resource-card">
+            <h3>Material de Apoio</h3>
+            <p id="video-material">Nenhum material associado a esta aula.</p>
+        </div>
+    </div>
+
+    <script>
+        // 1. GERENCIAMENTO DE TEMA
+        function aplicarTemaSalvo() {
+            const temaSalvo = localStorage.getItem('tema_plataforma') || 'light';
+            document.documentElement.setAttribute('data-theme', temaSalvo);
+            document.getElementById('theme-btn').innerText = temaSalvo === 'dark' ? '☀️' : '🌙';
+        }
+
+        function alternarTema() {
+            const temaAtual = document.documentElement.getAttribute('data-theme') || 'light';
+            const novoTema = temaAtual === 'light' ? 'dark' : 'light';
+            document.documentElement.setAttribute('data-theme', novoTema);
+            localStorage.setItem('tema_plataforma', novoTema);
+            document.getElementById('theme-btn').innerText = novoTema === 'dark' ? '☀️' : '🌙';
+        }
+
+        // 2. FILTRO DE INVERSÃO DE CORES DO VÍDEO
+        function aplicarInversaoSalva() {
+            const isInverted = localStorage.getItem('video_inverted') === 'true';
+            const playerContainer = document.getElementById('player-container');
+            const invertBtn = document.getElementById('invert-btn');
+
+            if (isInverted) {
+                playerContainer.classList.add('video-inverted');
+                invertBtn.classList.add('active');
+            } else {
+                playerContainer.classList.remove('video-inverted');
+                invertBtn.classList.remove('active');
+            }
+        }
+
+        function alternarInversaoVideo() {
+            const estadoAtual = localStorage.getItem('video_inverted') === 'true';
+            const novoEstado = !estadoAtual;
+            localStorage.setItem('video_inverted', novoEstado);
+            aplicarInversaoSalva();
+        }
+
+        aplicarTemaSalvo();
+        aplicarInversaoSalva();
+
+        // 3. BASE DE DADOS HIERÁRQUICA
+        const baseDeDados = [
+            {
+                id: "enem",
+                nome: "ENEM",
+                subcategorias: [
+                    {
+                        id: "enem-geral",
+                        nome: "Matriz ENEM",
+                        concursos: [
+                            {
+                                id: "enem-2026",
+                                nome: "ENEM - Edital Geral",
+                                disciplinas: [
+                                    {
+                                        id: "enem-mat",
+                                        nome: "Matemática e suas Tecnologias",
+                                        topicos: [
+                                            { id: "e-1", titulo: "Razão e Proporção", youtubeId: "evXrGaI6SVc", descricao: "Proporção e regra de três.", material: "Sem material." },
+                                            { id: "e-2", titulo: "Porcentagem e Juros", youtubeId: "dQw4w9WgXcQ", descricao: "Aplicações de porcentagem no ENEM.", material: "Sem material." }
+                                        ]
+                                    },
+                                    {
+                                        id: "enem-red",
+                                        nome: "Redação",
+                                        topicos: [
+                                            { id: "e-3", titulo: "Tese e Argumentação", youtubeId: "dQw4w9WgXcQ", descricao: "Estrutura do texto dissertativo.", material: "Sem material." }
+                                        ]
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                id: "vestibulares",
+                nome: "Vestibulares",
+                subcategorias: [
+                    {
+                        id: "sp",
+                        nome: "São Paulo",
+                        concursos: [
+                            {
+                                id: "fuvest",
+                                nome: "FUVEST (USP)",
+                                disciplinas: [
+                                    {
+                                        id: "fuv-lit",
+                                        nome: "Literatura Brasileira",
+                                        topicos: [
+                                            { id: "f-1", titulo: "Obras Obrigatórias: Romantismo", youtubeId: "dQw4w9WgXcQ", descricao: "Análise de obras da FUVEST.", material: "Sem material." }
+                                        ]
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                id: "concursos",
+                nome: "Concursos Públicos",
+                subcategorias: [
+                    {
+                        id: "conc-fund",
+                        nome: "Nível Fundamental",
+                        concursos: [
+                            {
+                                id: "pref-guarda",
+                                nome: "Prefeituras (Guarda / Serviços)",
+                                disciplinas: [
+                                    {
+                                        id: "fund-port",
+                                        nome: "Língua Portuguesa",
+                                        topicos: [
+                                            { id: "f-port-1", titulo: "Ortografia Básica", youtubeId: "dQw4w9WgXcQ", descricao: "Regras ortográficas.", material: "Sem material." }
+                                        ]
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        id: "conc-med",
+                        nome: "Nível Médio",
+                        concursos: [
+                            {
+                                id: "pm",
+                                nome: "Polícia Militar (PM)",
+                                disciplinas: [
+                                    {
+                                        id: "pm-port",
+                                        nome: "Língua Portuguesa",
+                                        topicos: [
+                                            { id: "pm-1", titulo: "Crase na Prática", youtubeId: "dQw4w9WgXcQ", descricao: "Uso obrigatório e proibido da crase.", material: "Sem material." }
+                                        ]
+                                    },
+                                    {
+                                        id: "pm-dir",
+                                        nome: "Noções de Direito Constitucional",
+                                        topicos: [
+                                            { id: "pm-3", titulo: "Artigo 5º - Direitos Individuais", youtubeId: "dQw4w9WgXcQ", descricao: "Direitos e garantias fundamentais.", material: "<a href='#'>Resumo em PDF</a>" }
+                                        ]
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        id: "conc-sup",
+                        nome: "Nível Superior",
+                        concursos: [
+                            {
+                                id: "pf-agente",
+                                nome: "Polícia Federal (Agente)",
+                                disciplinas: [
+                                    {
+                                        id: "pf-cont",
+                                        nome: "Contabilidade Geral",
+                                        topicos: [
+                                            { id: "pf-c1", titulo: "Balanço Patrimonial", youtubeId: "dQw4w9WgXcQ", descricao: "Ativo, Passivo e Patrimônio Líquido.", material: "Sem material." }
+                                        ]
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            }
+        ];
+
+        // 4. ESTADOS DE NAVEGAÇÃO
+        let nivelAtual = 'RAIZ';
+        let catSelecionada = null;
+        let subSelecionada = null;
+        let concursoSelecionado = null;
+        let disciplinaSelecionada = null;
+
+        const menuContainer = document.getElementById('menu-container');
+        const searchBox = document.getElementById('search-box');
+        const searchInput = document.getElementById('search-input');
+        const btnBack = document.getElementById('btn-back');
+        const btnReset = document.getElementById('btn-reset');
+        
+        const breadcrumbEl = document.getElementById('breadcrumb');
+        const titleEl = document.getElementById('video-title');
+        const descEl = document.getElementById('video-desc');
+        const materialEl = document.getElementById('video-material');
+        const playerEl = document.getElementById('youtube-player');
+
+        function renderizarMenu() {
+            menuContainer.innerHTML = '';
+            searchBox.style.display = 'none';
+
+            if (nivelAtual === 'RAIZ') {
+                btnBack.style.display = 'none';
+                btnReset.style.display = 'none';
+                
+                criarHeader('Selecione a Modalidade');
+                baseDeDados.forEach(cat => criarBotao(cat.nome, () => selecionarCategoria(cat)));
+            } 
+            else if (nivelAtual === 'SUBCATEGORIA') {
+                btnBack.style.display = 'block';
+                btnReset.style.display = 'block';
+
+                criarHeader(`Opções de ${catSelecionada.nome}`);
+                catSelecionada.subcategorias.forEach(sub => criarBotao(sub.nome, () => selecionarSubcategoria(sub)));
+            } 
+            else if (nivelAtual === 'CONCURSOS') {
+                btnBack.style.display = 'block';
+                btnReset.style.display = 'block';
+                searchBox.style.display = 'block';
+                searchInput.placeholder = "🔍 Pesquisar concurso/vestibular...";
+
+                criarHeader(`Opções (${subSelecionada.nome})`);
+                renderizarListaConcursos(subSelecionada.concursos);
+            }
+            else if (nivelAtual === 'DISCIPLINAS') {
+                btnBack.style.display = 'block';
+                btnReset.style.display = 'block';
+                searchBox.style.display = 'block';
+                searchInput.placeholder = "🔍 Pesquisar disciplina...";
+
+                criarHeader(`Disciplinas: ${concursoSelecionado.nome}`);
+                renderizarListaDisciplinas(concursoSelecionado.disciplinas);
+            }
+            else if (nivelAtual === 'TOPICOS') {
+                btnBack.style.display = 'block';
+                btnReset.style.display = 'block';
+                searchBox.style.display = 'block';
+                searchInput.placeholder = "🔍 Pesquisar tópico/aula...";
+
+                criarHeader(`Tópicos de ${disciplinaSelecionada.nome}`);
+                renderizarListaTopicos(disciplinaSelecionada.topicos);
+            }
+        }
+
+        function renderizarListaConcursos(lista) {
+            menuContainer.innerHTML = '';
+            criarHeader(`Opções (${subSelecionada.nome})`);
+            if (lista.length === 0) {
+                menuContainer.innerHTML += `<div style="color:var(--text-muted); padding:10px; font-size:0.9rem;">Nenhum item encontrado.</div>`;
+                return;
+            }
+            lista.forEach(conc => criarBotao(conc.nome, () => selecionarConcurso(conc)));
+        }
+
+        function renderizarListaDisciplinas(lista) {
+            menuContainer.innerHTML = '';
+            criarHeader(`Disciplinas: ${concursoSelecionado.nome}`);
+            if (lista.length === 0) {
+                menuContainer.innerHTML += `<div style="color:var(--text-muted); padding:10px; font-size:0.9rem;">Nenhuma disciplina encontrada.</div>`;
+                return;
+            }
+            lista.forEach(disc => criarBotao(disc.nome, () => selecionarDisciplina(disc)));
+        }
+
+        function renderizarListaTopicos(lista) {
+            menuContainer.innerHTML = '';
+            criarHeader(`Tópicos de ${disciplinaSelecionada.nome}`);
+            if (lista.length === 0) {
+                menuContainer.innerHTML += `<div style="color:var(--text-muted); padding:10px; font-size:0.9rem;">Nenhum tópico encontrado.</div>`;
+                return;
+            }
+            lista.forEach(topico => {
+                const btn = criarBotao(topico.titulo, () => carregarAula(topico, btn));
+                btn.classList.add('topic-item');
+            });
+        }
+
+        function executarFiltro() {
+            const termo = searchInput.value.toLowerCase();
+            if (nivelAtual === 'CONCURSOS') {
+                renderizarListaConcursos(subSelecionada.concursos.filter(c => c.nome.toLowerCase().includes(termo)));
+            } else if (nivelAtual === 'DISCIPLINAS') {
+                renderizarListaDisciplinas(concursoSelecionado.disciplinas.filter(d => d.nome.toLowerCase().includes(termo)));
+            } else if (nivelAtual === 'TOPICOS') {
+                renderizarListaTopicos(disciplinaSelecionada.topicos.filter(t => t.titulo.toLowerCase().includes(termo)));
+            }
+        }
+
+        function criarHeader(texto) {
+            const label = document.createElement('div');
+            label.className = 'section-header';
+            label.innerText = texto;
+            menuContainer.appendChild(label);
+        }
+
+        function criarBotao(texto, acao) {
+            const btn = document.createElement('button');
+            btn.className = 'menu-item';
+            btn.innerText = texto;
+            btn.onclick = acao;
+            menuContainer.appendChild(btn);
+            return btn;
+        }
+
+        function selecionarCategoria(cat) {
+            catSelecionada = cat;
+            nivelAtual = 'SUBCATEGORIA';
+            breadcrumbEl.innerText = cat.nome;
+            renderizarMenu();
+        }
+
+        function selecionarSubcategoria(sub) {
+            subSelecionada = sub;
+            nivelAtual = 'CONCURSOS';
+            searchInput.value = '';
+            breadcrumbEl.innerText = `${catSelecionada.nome} > ${sub.nome}`;
+            renderizarMenu();
+        }
+
+        function selecionarConcurso(conc) {
+            concursoSelecionado = conc;
+            nivelAtual = 'DISCIPLINAS';
+            searchInput.value = '';
+            breadcrumbEl.innerText = `${catSelecionada.nome} > ${subSelecionada.nome} > ${conc.nome}`;
+            renderizarMenu();
+        }
+
+        function selecionarDisciplina(disc) {
+            disciplinaSelecionada = disc;
+            nivelAtual = 'TOPICOS';
+            searchInput.value = '';
+            breadcrumbEl.innerText = `${catSelecionada.nome} > ${subSelecionada.nome} > ${concursoSelecionado.nome} > ${disc.nome}`;
+            renderizarMenu();
+        }
+
+        function carregarAula(topico, btnElemento) {
+            document.querySelectorAll('.topic-item').forEach(b => b.classList.remove('active'));
+            if(btnElemento) btnElemento.classList.add('active');
+
+            playerEl.src = `https://www.youtube.com/embed/${topico.youtubeId}?autoplay=0`;
+            titleEl.innerText = topico.titulo;
+            descEl.innerText = topico.descricao;
+            materialEl.innerHTML = topico.material;
+        }
+
+        function voltarNivel() {
+            searchInput.value = '';
+            if (nivelAtual === 'TOPICOS') {
+                nivelAtual = 'DISCIPLINAS';
+                disciplinaSelecionada = null;
+                breadcrumbEl.innerText = `${catSelecionada.nome} > ${subSelecionada.nome} > ${concursoSelecionado.nome}`;
+            } else if (nivelAtual === 'DISCIPLINAS') {
+                nivelAtual = 'CONCURSOS';
+                concursoSelecionado = null;
+                breadcrumbEl.innerText = `${catSelecionada.nome} > ${subSelecionada.nome}`;
+            } else if (nivelAtual === 'CONCURSOS') {
+                nivelAtual = 'SUBCATEGORIA';
+                subSelecionada = null;
+                breadcrumbEl.innerText = catSelecionada.nome;
+            } else if (nivelAtual === 'SUBCATEGORIA') {
+                nivelAtual = 'RAIZ';
+                catSelecionada = null;
+                breadcrumbEl.innerText = 'Selecione uma categoria';
+            }
+            renderizarMenu();
+        }
+
+        function resetarNavegacao() {
+            searchInput.value = '';
+            nivelAtual = 'RAIZ';
+            catSelecionada = null;
+            subSelecionada = null;
+            concursoSelecionado = null;
+            disciplinaSelecionada = null;
+            breadcrumbEl.innerText = 'Selecione uma categoria';
+            renderizarMenu();
+        }
+
+        renderizarMenu();
+    </script>
+</body>
+</html>
