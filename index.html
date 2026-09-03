@@ -23,168 +23,157 @@
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; }
-        body { display: flex; height: 100vh; background-color: var(--bg-body); color: var(--text-main); overflow: hidden; }
+        body { display: flex; height: 100vh; background-color: var(--bg-body); color: var(--text-main); }
         
-        /* Mobile Header */
-        .mobile-header {
-            display: none;
-            height: 60px;
-            background: var(--bg-sidebar-header);
-            border-bottom: 1px solid var(--border-menu-item);
-            padding: 0 15px;
-            align-items: center;
-            justify-content: space-between;
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            z-index: 90;
-        }
-
-        .menu-toggle-btn {
-            background: var(--bg-nav-btn);
-            border: 1px solid var(--border-menu-item);
-            color: var(--text-main);
-            padding: 8px 12px;
-            border-radius: 6px;
-            font-size: 1.2rem;
-            cursor: pointer;
+        /* Sidebar */
+        #sidebar { width: 340px; background: var(--bg-sidebar); color: #fff; display: flex; flex-direction: column; border-right: 1px solid var(--border-card); }
+        .brand { padding: 18px; font-size: 1.1rem; font-weight: bold; background: var(--bg-sidebar-header); color: var(--accent-color); border-bottom: 1px solid var(--border-menu-item); display: flex; justify-content: space-between; align-items: center; }
+        
+        /* Agrupamento da Logo + Nome da Marca */
+        .brand-title {
             display: flex;
             align-items: center;
-            gap: 6px;
+            gap: 8px;
         }
 
-        .sidebar-overlay {
-            display: none;
-            position: fixed;
-            inset: 0;
-            background: rgba(0, 0, 0, 0.7);
-            z-index: 99;
-            backdrop-filter: blur(2px);
+        /* Logo do mesmo tamanho visual do texto */
+        .brand-logo {
+            width: 3em;
+            height: 3em;
+            border-radius: 8px;
+            object-fit: cover;
         }
-        .sidebar-overlay.active { display: block; }
-
-        /* Sidebar */
-        #sidebar { 
-            width: 340px; 
-            background: var(--bg-sidebar); 
-            color: #fff; 
-            display: flex; 
-            flex-direction: column; 
-            border-right: 1px solid var(--border-card); 
-            z-index: 100;
-            transition: transform 0.3s ease;
-        }
-
-        .brand { padding: 18px; font-size: 1.1rem; font-weight: bold; background: var(--bg-sidebar-header); color: var(--accent-color); border-bottom: 1px solid var(--border-menu-item); display: flex; justify-content: space-between; align-items: center; }
-        .brand-title { display: flex; align-items: center; gap: 8px; }
-        .brand-logo { width: 2.5em; height: 2.5em; border-radius: 8px; object-fit: cover; }
 
         .header-actions { display: flex; gap: 6px; }
-        .theme-toggle-btn { background: none; border: 1px solid var(--border-menu-item); color: var(--accent-color); font-size: 0.85rem; padding: 6px 10px; border-radius: 6px; cursor: pointer; }
+        .theme-toggle-btn { background: none; border: 1px solid var(--border-menu-item); color: var(--accent-color); font-size: 0.9rem; padding: 5px 8px; border-radius: 6px; cursor: pointer; }
         .theme-toggle-btn:hover { background: var(--bg-nav-btn); }
         .theme-toggle-btn.active { background: var(--accent-color); color: #fff; }
 
         .nav-controls { padding: 10px; background: var(--bg-sidebar-header); display: flex; gap: 8px; }
-        .btn-nav { flex: 1; padding: 10px; background: var(--bg-nav-btn); color: #fff; border: none; border-radius: 4px; cursor: pointer; font-size: 0.85rem; font-weight: 600; display: none; }
+        .btn-nav { flex: 1; padding: 8px; background: var(--bg-nav-btn); color: #fff; border: none; border-radius: 4px; cursor: pointer; font-size: 0.85rem; font-weight: 600; display: none; }
         .btn-nav:hover { opacity: 0.9; }
 
+        /* Input de Busca Dinâmico */
         .search-box { padding: 10px 12px; display: none; background: var(--bg-sidebar); border-bottom: 1px solid var(--border-menu-item); }
-        .search-input { width: 100%; padding: 10px 12px; border-radius: 6px; border: 1px solid var(--border-menu-item); background: var(--bg-sidebar-header); color: #fff; font-size: 0.9rem; outline: none; }
+        .search-input { width: 100%; padding: 8px 12px; border-radius: 6px; border: 1px solid var(--border-menu-item); background: var(--bg-sidebar-header); color: #fff; font-size: 0.9rem; outline: none; }
         .search-input::placeholder { color: var(--text-muted); }
         .search-input:focus { border-color: var(--accent-color); }
         
         .menu-content { overflow-y: auto; flex: 1; padding: 12px; }
-        .menu-item { width: 100%; text-align: left; padding: 14px 12px; background: var(--bg-menu-item); border: 1px solid var(--border-menu-item); color: var(--text-menu-item); cursor: pointer; border-radius: 6px; font-size: 0.95rem; margin-bottom: 8px; }
+        .menu-item { width: 100%; text-align: left; padding: 12px; background: var(--bg-menu-item); border: 1px solid var(--border-menu-item); color: var(--text-menu-item); cursor: pointer; border-radius: 6px; font-size: 0.95rem; margin-bottom: 8px; }
         .menu-item:hover { border-color: var(--accent-color); }
         .menu-item.active { background: var(--accent-color); border-color: var(--accent-color); color: #000; font-weight: bold; }
         
         .section-header { font-size: 0.8rem; text-transform: uppercase; color: var(--text-muted); margin: 10px 0 8px 4px; font-weight: bold; letter-spacing: 0.05em; }
 
-        .sidebar-footer-tools { background: var(--bg-sidebar-header); border-top: 1px solid var(--border-menu-item); display: flex; flex-direction: column; }
-        .extra-tools-header { padding: 12px; font-size: 0.8rem; text-transform: uppercase; color: var(--accent-color); font-weight: bold; letter-spacing: 0.05em; cursor: pointer; display: flex; justify-content: space-between; align-items: center; user-select: none; transition: background 0.2s; }
-        .extra-tools-header:hover { background: var(--bg-menu-item); }
-        .extra-tools-links { display: none; flex-direction: column; gap: 6px; padding: 0 12px 12px 12px; }
-        .sidebar-footer-tools.open .extra-tools-links { display: flex; }
+        /* Card Retrátil de Ferramentas Extras na Sidebar */
+        .sidebar-footer-tools {
+            background: var(--bg-sidebar-header);
+            border-top: 1px solid var(--border-menu-item);
+            display: flex;
+            flex-direction: column;
+        }
 
-        .tool-link { display: flex; align-items: center; gap: 8px; background: var(--bg-nav-btn); border: 1px solid var(--border-menu-item); color: var(--text-main); padding: 10px; border-radius: 6px; text-decoration: none; font-size: 0.82rem; font-weight: 600; }
+        .extra-tools-header {
+            padding: 12px;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            color: var(--accent-color);
+            font-weight: bold;
+            letter-spacing: 0.05em;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            user-select: none;
+            transition: background 0.2s;
+        }
+
+        .extra-tools-header:hover {
+            background: var(--bg-menu-item);
+        }
+
+        .extra-tools-links {
+            display: none;
+            flex-direction: column;
+            gap: 6px;
+            padding: 0 12px 12px 12px;
+        }
+
+        /* Classe para ativar exibição do conteúdo expandido */
+        .sidebar-footer-tools.open .extra-tools-links {
+            display: flex;
+        }
+
+        .tool-link {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: var(--bg-nav-btn);
+            border: 1px solid var(--border-menu-item);
+            color: var(--text-main);
+            padding: 8px 10px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-size: 0.82rem;
+            font-weight: 600;
+            transition: border-color 0.2s, background-color 0.2s;
+        }
+
+        .tool-link:hover {
+            border-color: var(--accent-color);
+            background: var(--bg-menu-item);
+            color: #fff;
+        }
 
         /* Main Area */
         #main-content { flex: 1; display: flex; flex-direction: column; overflow-y: auto; padding: 30px; }
         .header { margin-bottom: 20px; }
-        .breadcrumb { font-size: 0.85rem; color: var(--accent-color); font-weight: 600; margin-bottom: 8px; text-transform: uppercase; word-break: break-word; }
+        .breadcrumb { font-size: 0.85rem; color: var(--accent-color); font-weight: 600; margin-bottom: 8px; text-transform: uppercase; }
         .header h1 { font-size: 1.8rem; color: var(--text-main); margin-bottom: 6px; }
         .header p { color: var(--text-muted); font-size: 0.95rem; }
 
-        /* Player Wrapper */
+        /* Player Wrapper & Inversão de Cores */
         .player-wrapper { 
-            position: relative;
             background: #000; 
             border-radius: 12px; 
             overflow: hidden; 
             aspect-ratio: 16/9; 
-            width: 100%;
             max-width: 960px; 
             box-shadow: 0 10px 25px rgba(0,0,0,0.5); 
-            transition: filter 0.3s ease, -webkit-filter 0.3s ease;
+            transition: filter 0.3s ease;
         }
 
-        #youtube-player { 
-            width: 100%; 
-            height: 100%; 
-            border: none; 
-            display: block;
-        }
-
-        /* Regra de Inversão Universal (PC e Mobile) */
+        /* Inversão no vídeo */
         .player-wrapper.video-inverted {
-            filter: invert(1) hue-rotate(180deg) !important;
-            -webkit-filter: invert(1) hue-rotate(180deg) !important;
+            filter: invert(1) hue-rotate(180deg);
         }
+
+        /* Suporte ao Fullscreen nativo quando acionado pelo Player */
+        .player-wrapper:fullscreen,
+        .player-wrapper:-webkit-full-screen {
+            max-width: 100%;
+            width: 100vw;
+            height: 100vh;
+            border-radius: 0;
+        }
+
+        /* Manutenção do filtro de cores em tela cheia */
+        iframe:fullscreen,
+        iframe:-webkit-full-screen {
+            filter: inherit;
+        }
+
+        #youtube-player { width: 100%; height: 100%; border: none; }
 
         /* Resource Box */
-        .resource-card { width: 100%; max-width: 960px; background: var(--bg-card); margin-top: 20px; padding: 20px; border-radius: 10px; border: 1px solid var(--border-card); }
+        .resource-card { max-width: 960px; background: var(--bg-card); margin-top: 20px; padding: 20px; border-radius: 10px; border: 1px solid var(--border-card); }
         .resource-card h3 { margin-bottom: 8px; color: var(--text-main); font-size: 1.1rem; }
         .resource-card a { color: var(--accent-color); text-decoration: none; font-weight: 600; }
         .resource-card a:hover { text-decoration: underline; }
-
-        /* Media Queries Mobile */
-        @media (max-width: 768px) {
-            body { flex-direction: column; }
-            .mobile-header { display: flex; }
-
-            #sidebar {
-                position: fixed;
-                top: 0;
-                bottom: 0;
-                left: 0;
-                width: 85%;
-                max-width: 320px;
-                transform: translateX(-100%);
-                box-shadow: 5px 0 15px rgba(0,0,0,0.5);
-            }
-
-            #sidebar.open { transform: translateX(0); }
-            #main-content { padding: 75px 15px 20px 15px; }
-
-            .header h1 { font-size: 1.4rem; }
-            .header p { font-size: 0.85rem; }
-            .menu-item { padding: 14px; }
-        }
     </style>
 </head>
 <body>
-
-    <div class="mobile-header">
-        <button class="menu-toggle-btn" onclick="toggleSidebar()">
-            <span>☰</span> Menu
-        </button>
-        <div class="brand-title">
-            <span style="font-weight: bold; color: var(--accent-color);">Estudo em Foco</span>
-        </div>
-    </div>
-
-    <div class="sidebar-overlay" id="sidebar-overlay" onclick="toggleSidebar()"></div>
 
     <div id="sidebar">
         <div class="brand">
@@ -207,6 +196,7 @@
 
         <div class="menu-content" id="menu-container"></div>
 
+        <!-- Ferramentas Extras Retrátil (Rodapé do Sidebar) -->
         <div class="sidebar-footer-tools" id="extra-tools-container">
             <div class="extra-tools-header" onclick="alternarFerramentasExtras()">
                 <span>🛠️ Ferramentas Extras</span>
@@ -241,27 +231,16 @@
     </div>
 
     <script>
-        function toggleSidebar() {
-            const sidebar = document.getElementById('sidebar');
-            const overlay = document.getElementById('sidebar-overlay');
-            sidebar.classList.toggle('open');
-            overlay.classList.toggle('active');
-        }
-
-        function fecharSidebarMobile() {
-            if (window.innerWidth <= 768) {
-                document.getElementById('sidebar').classList.remove('open');
-                document.getElementById('sidebar-overlay').classList.remove('active');
-            }
-        }
-
+        // ALTERNÂNCIA RETRÁTIL DAS FERRAMENTAS EXTRAS
         function alternarFerramentasExtras() {
             const container = document.getElementById('extra-tools-container');
             const icon = document.getElementById('extra-tools-icon');
+            
             const estaAberto = container.classList.toggle('open');
             icon.innerText = estaAberto ? '▼' : '▲';
         }
 
+        // FILTRO DE INVERSÃO DE CORES DO VÍDEO
         function aplicarInversaoSalva() {
             const isInverted = localStorage.getItem('video_inverted') === 'true';
             const playerContainer = document.getElementById('player-container');
@@ -283,6 +262,9 @@
             aplicarInversaoSalva();
         }
 
+        aplicarInversaoSalva();
+
+        // BASE DE DADOS HIERÁRQUICA
         const baseDeDados = [
             {
                 id: "enem",
@@ -414,6 +396,7 @@
             }
         ];
 
+        // ESTADOS DE NAVEGAÇÃO
         let nivelAtual = 'RAIZ';
         let catSelecionada = null;
         let subSelecionada = null;
@@ -439,12 +422,14 @@
             if (nivelAtual === 'RAIZ') {
                 btnBack.style.display = 'none';
                 btnReset.style.display = 'none';
+                
                 criarHeader('Selecione a Modalidade');
                 baseDeDados.forEach(cat => criarBotao(cat.nome, () => selecionarCategoria(cat)));
             } 
             else if (nivelAtual === 'SUBCATEGORIA') {
                 btnBack.style.display = 'block';
                 btnReset.style.display = 'block';
+
                 criarHeader(`Opções de ${catSelecionada.nome}`);
                 catSelecionada.subcategorias.forEach(sub => criarBotao(sub.nome, () => selecionarSubcategoria(sub)));
             } 
@@ -453,6 +438,7 @@
                 btnReset.style.display = 'block';
                 searchBox.style.display = 'block';
                 searchInput.placeholder = "🔍 Pesquisar concurso/vestibular...";
+
                 criarHeader(`Opções (${subSelecionada.nome})`);
                 renderizarListaConcursos(subSelecionada.concursos);
             }
@@ -461,6 +447,7 @@
                 btnReset.style.display = 'block';
                 searchBox.style.display = 'block';
                 searchInput.placeholder = "🔍 Pesquisar disciplina...";
+
                 criarHeader(`Disciplinas: ${concursoSelecionado.nome}`);
                 renderizarListaDisciplinas(concursoSelecionado.disciplinas);
             }
@@ -469,6 +456,7 @@
                 btnReset.style.display = 'block';
                 searchBox.style.display = 'block';
                 searchInput.placeholder = "🔍 Pesquisar tópico/aula...";
+
                 criarHeader(`Tópicos de ${disciplinaSelecionada.nome}`);
                 renderizarListaTopicos(disciplinaSelecionada.topicos);
             }
@@ -573,8 +561,6 @@
             titleEl.innerText = topico.titulo;
             descEl.innerText = topico.descricao;
             materialEl.innerHTML = topico.material;
-
-            fecharSidebarMobile();
         }
 
         function voltarNivel() {
@@ -611,7 +597,7 @@
         }
 
         renderizarMenu();
-        aplicarInversaoSalva();
     </script>
 </body>
 </html>
+
