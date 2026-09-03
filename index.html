@@ -73,29 +73,33 @@
         .header h1 { font-size: 1.8rem; color: var(--text-main); margin-bottom: 6px; }
         .header p { color: var(--text-muted); font-size: 0.95rem; }
 
-        /* Player Wrapper Dinâmico */
+        /* Player Wrapper com Zoom / Preenchimento */
         .player-wrapper { 
             background: #000; 
             border-radius: 12px; 
             overflow: hidden; 
-            width: 100%;
+            aspect-ratio: 16/9; 
             max-width: 960px; 
-            aspect-ratio: 16/9; /* Proporção padrão inicial */
             box-shadow: 0 10px 25px rgba(0,0,0,0.15); 
-            transition: filter 0.3s ease, aspect-ratio 0.3s ease, max-width 0.3s ease;
+            transition: filter 0.3s ease;
             position: relative;
-        }
-
-        /* Ajuste visual quando for Shorts/Vídeo Vertical */
-        .player-wrapper.is-vertical {
-            max-width: 380px; /* Limita a largura em tela para não ficar excessivamente alto */
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
         .player-wrapper.video-inverted {
             filter: invert(1) hue-rotate(180deg);
         }
 
-        #youtube-player { width: 100%; height: 100%; border: none; }
+        /* Iframe ajustado com transform scale para eliminar bordas pretas laterais do player */
+        iframe { 
+            width: 101%; 
+            height: 101%; 
+            border: none;
+            transform: scale(1.03);
+            transform-origin: center center;
+        }
 
         /* Resource Box */
         .resource-card { max-width: 960px; background: var(--bg-card); margin-top: 20px; padding: 20px; border-radius: 10px; border: 1px solid var(--border-card); }
@@ -134,7 +138,7 @@
         </div>
 
         <div class="player-wrapper" id="player-container">
-            <div id="youtube-player"></div>
+            <iframe id="youtube-player" src="" allowfullscreen></iframe>
         </div>
 
         <div class="resource-card">
@@ -333,69 +337,7 @@
         const titleEl = document.getElementById('video-title');
         const descEl = document.getElementById('video-desc');
         const materialEl = document.getElementById('video-material');
-
-        // 5. YOUTUBE API INTEGRATION
-        let player;
-        
-        // Carrega a biblioteca de Iframe do YouTube dinamicamente
-        const tag = document.createElement('script');
-        tag.src = "https://www.youtube.com/iframe_api";
-        const firstScriptTag = document.getElementsByTagName('script')[0];
-        firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
-
-        function onYouTubeIframeAPIReady() {
-            player = new YT.Player('youtube-player', {
-                height: '100%',
-                width: '100%',
-                playerVars: { 'autoplay': 0, 'rel': 0 },
-                events: {
-                    'onStateChange': onPlayerStateChange
-                }
-            });
-        }
-
-        // Ajusta o Aspect Ratio quando o vídeo começa a reproduzir
-        function onPlayerStateChange(event) {
-            if (event.data === YT.PlayerState.PLAYING || event.data === YT.PlayerState.BUFFERING) {
-                ajustarFormatoContainer();
-            }
-        }
-
-        function ajustarFormatoContainer() {
-            if (!player || typeof player.getIframe !== 'function') return;
-            
-            const iframe = player.getIframe();
-            const playerContainer = document.getElementById('player-container');
-            
-            // Tenta obter a proporção natural calculada pelo próprio iframe do YouTube
-            const width = iframe.clientWidth || iframe.offsetWidth;
-            const height = iframe.clientHeight || iframe.offsetHeight;
-
-            if (width && height) {
-                const ratio = width / height;
-                playerContainer.style.aspectRatio = `${width} / ${height}`;
-
-                // Se a proporção for vertical (ex: Shorts < 1.0)
-                if (ratio < 1) {
-                    playerContainer.classList.add('is-vertical');
-                } else {
-                    playerContainer.classList.remove('is-vertical');
-                }
-            }
-        }
-
-        function carregarAula(topico, btnElemento) {
-            document.querySelectorAll('.topic-item').forEach(b => b.classList.remove('active'));
-            if(btnElemento) btnElemento.classList.add('active');
-
-            titleEl.innerText = topico.titulo;
-            descEl.innerText = topico.descricao;
-            materialEl.innerHTML = topico.material;
-
-            if (player && typeof player.loadVideoById === 'function') {
-                player.loadVideoById(topico.youtubeId);
-            }
-        }
+        const playerEl = document.getElementById('youtube-player');
 
         function renderizarMenu() {
             menuContainer.innerHTML = '';
@@ -533,6 +475,16 @@
             searchInput.value = '';
             breadcrumbEl.innerText = `${catSelecionada.nome} > ${subSelecionada.nome} > ${concursoSelecionado.nome} > ${disc.nome}`;
             renderizarMenu();
+        }
+
+        function carregarAula(topico, btnElemento) {
+            document.querySelectorAll('.topic-item').forEach(b => b.classList.remove('active'));
+            if(btnElemento) btnElemento.classList.add('active');
+
+            playerEl.src = `https://www.youtube.com/embed/${topico.youtubeId}?autoplay=0`;
+            titleEl.innerText = topico.titulo;
+            descEl.innerText = topico.descricao;
+            materialEl.innerHTML = topico.material;
         }
 
         function voltarNivel() {
