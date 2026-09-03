@@ -73,32 +73,27 @@
         .header h1 { font-size: 1.8rem; color: var(--text-main); margin-bottom: 6px; }
         .header p { color: var(--text-muted); font-size: 0.95rem; }
 
-        /* Player Wrapper com Zoom / Preenchimento */
-        .player-wrapper { 
-            background: #000; 
-            border-radius: 12px; 
-            overflow: hidden; 
-            aspect-ratio: 16/9; 
-            max-width: 960px; 
-            box-shadow: 0 10px 25px rgba(0,0,0,0.15); 
+        /* Container idêntico ao do seu portfólio */
+        .video-container {
+            width: 100%;
+            max-width: 960px;
+            aspect-ratio: 16/9;
+            background: #000;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
             transition: filter 0.3s ease;
-            position: relative;
-            display: flex;
-            align-items: center;
-            justify-content: center;
         }
 
-        .player-wrapper.video-inverted {
+        .video-container.video-inverted {
             filter: invert(1) hue-rotate(180deg);
         }
 
-        /* Iframe ajustado com transform scale para eliminar bordas pretas laterais do player */
-        iframe { 
-            width: 101%; 
-            height: 101%; 
+        .video-container iframe {
+            width: 100%;
+            height: 100%;
             border: none;
-            transform: scale(1.03);
-            transform-origin: center center;
+            display: block;
         }
 
         /* Resource Box */
@@ -137,7 +132,8 @@
             <p id="video-desc">Navegue pelas opções do menu para escolher o edital, a disciplina, o tópico e a aula desejada.</p>
         </div>
 
-        <div class="player-wrapper" id="player-container">
+        <!-- Wrapper do vídeo estruturado exatamente igual ao seu portfólio -->
+        <div class="video-container" id="player-container">
             <iframe id="youtube-player" src="" allowfullscreen></iframe>
         </div>
 
