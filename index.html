@@ -129,11 +129,21 @@
             width: 100%;
             max-width: 960px; 
             box-shadow: 0 10px 25px rgba(0,0,0,0.5); 
+        }
+
+        #youtube-player { 
+            width: 100%; 
+            height: 100%; 
+            border: none; 
             transition: filter 0.3s ease;
         }
 
-        .player-wrapper.video-inverted { filter: invert(1) hue-rotate(180deg); }
-        #youtube-player { width: 100%; height: 100%; border: none; }
+        /* Aplicação direta no IFRAME para não perder o efeito */
+        .player-wrapper.video-inverted #youtube-player,
+        #youtube-player.video-inverted { 
+            filter: invert(1) hue-rotate(180deg) !important; 
+            -webkit-filter: invert(1) hue-rotate(180deg) !important;
+        }
 
         /* Resource Box */
         .resource-card { width: 100%; max-width: 960px; background: var(--bg-card); margin-top: 20px; padding: 20px; border-radius: 10px; border: 1px solid var(--border-card); }
@@ -163,18 +173,19 @@
             }
 
             #main-content {
-                padding: 75px 15px 20px 15px; /* Espaço para o topo fixo mobile */
+                padding: 75px 15px 20px 15px;
             }
 
             .header h1 { font-size: 1.4rem; }
             .header p { font-size: 0.85rem; }
             
-            .menu-item { padding: 14px; } /* Área maior de toque */
+            .menu-item { padding: 14px; }
         }
     </style>
 </head>
 <body>
 
+    <!-- Cabeçalho Mobile -->
     <div class="mobile-header">
         <button class="menu-toggle-btn" onclick="toggleSidebar()">
             <span>☰</span> Menu
@@ -184,6 +195,7 @@
         </div>
     </div>
 
+    <!-- Máscara de fundo ao abrir menu em mobile -->
     <div class="sidebar-overlay" id="sidebar-overlay" onclick="toggleSidebar()"></div>
 
     <div id="sidebar">
@@ -265,17 +277,20 @@
             icon.innerText = estaAberto ? '▼' : '▲';
         }
 
-        // INVERSÃO DE CORES DO VÍDEO
+        // INVERSÃO DE CORES DO VÍDEO (Aplica no Container E no Iframe)
         function aplicarInversaoSalva() {
             const isInverted = localStorage.getItem('video_inverted') === 'true';
             const playerContainer = document.getElementById('player-container');
+            const youtubePlayer = document.getElementById('youtube-player');
             const invertBtn = document.getElementById('invert-btn');
 
             if (isInverted) {
                 playerContainer.classList.add('video-inverted');
+                youtubePlayer.classList.add('video-inverted');
                 invertBtn.classList.add('active');
             } else {
                 playerContainer.classList.remove('video-inverted');
+                youtubePlayer.classList.remove('video-inverted');
                 invertBtn.classList.remove('active');
             }
         }
@@ -286,8 +301,6 @@
             localStorage.setItem('video_inverted', novoEstado);
             aplicarInversaoSalva();
         }
-
-        aplicarInversaoSalva();
 
         // BASE DE DADOS
         const baseDeDados = [
@@ -587,7 +600,10 @@
             descEl.innerText = topico.descricao;
             materialEl.innerHTML = topico.material;
             
-            // Fecha a barra lateral automaticamente no celular ao clicar em um vídeo
+            // Força a reaplicação do filtro caso a troca de URL resete o estilo
+            aplicarInversaoSalva();
+
+            // Fecha a barra lateral no mobile
             fecharSidebarMobile();
         }
 
@@ -624,7 +640,9 @@
             renderizarMenu();
         }
 
+        // Inicializa menu e tema
         renderizarMenu();
+        aplicarInversaoSalva();
     </script>
 </body>
 </html>
