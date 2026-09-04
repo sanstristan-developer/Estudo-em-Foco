@@ -85,6 +85,7 @@
         /* Sidebar */
         #sidebar { 
             width: 320px; 
+            height: 100vh;
             background: var(--bg-sidebar); 
             color: #fff; 
             display: flex; 
@@ -104,6 +105,7 @@
             display: flex; 
             justify-content: space-between; 
             align-items: center; 
+            flex-shrink: 0;
         }
         
         .brand-title {
@@ -132,7 +134,7 @@
         .theme-toggle-btn:hover { background: var(--bg-nav-btn); }
         .theme-toggle-btn.active { background: var(--accent-color); color: #fff; }
 
-        .nav-controls { padding: 10px; background: var(--bg-sidebar-header); display: flex; gap: 8px; }
+        .nav-controls { padding: 10px; background: var(--bg-sidebar-header); display: flex; gap: 8px; flex-shrink: 0; }
         .btn-nav { 
             flex: 1; 
             padding: 10px; 
@@ -148,7 +150,7 @@
         .btn-nav:hover { opacity: 0.9; }
 
         /* Input de Busca Dinâmico */
-        .search-box { padding: 10px 12px; display: none; background: var(--bg-sidebar); border-bottom: 1px solid var(--border-menu-item); }
+        .search-box { padding: 10px 12px; display: none; background: var(--bg-sidebar); border-bottom: 1px solid var(--border-menu-item); flex-shrink: 0; }
         .search-input { width: 100%; padding: 10px 12px; border-radius: 6px; border: 1px solid var(--border-menu-item); background: var(--bg-sidebar-header); color: #fff; font-size: 0.9rem; outline: none; }
         .search-input::placeholder { color: var(--text-muted); }
         .search-input:focus { border-color: var(--accent-color); }
@@ -178,6 +180,7 @@
             border-top: 1px solid var(--border-menu-item);
             display: flex;
             flex-direction: column;
+            flex-shrink: 0;
         }
 
         .extra-tools-header {
@@ -297,6 +300,7 @@
                 width: 280px;
                 transform: translateX(-100%);
                 box-shadow: 5px 0 15px rgba(0, 0, 0, 0.5);
+                overflow-y: auto;
             }
 
             #sidebar.open { transform: translateX(0); }
@@ -346,10 +350,10 @@
 
         <div class="menu-content" id="menu-container"></div>
 
-        <div class="sidebar-footer-tools" id="extra-tools-container">
+        <div class="sidebar-footer-tools open" id="extra-tools-container">
             <div class="extra-tools-header" onclick="alternarFerramentasExtras()">
                 <span>🛠️ Ferramentas Extras</span>
-                <span id="extra-tools-icon">▲</span>
+                <span id="extra-tools-icon">▼</span>
             </div>
             <div class="extra-tools-links">
                 <a href="https://sanstristan-developer.github.io/Night-PDF/" target="_blank" class="tool-link">
@@ -769,4 +773,3 @@
     </script>
 </body>
 </html>
-
