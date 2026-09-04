@@ -58,28 +58,50 @@ const baseDeDados = [
         ]
     },
     {
-        id: "concursos",
-        nome: "Concursos Públicos",
-        subcategorias: [
-            {
-                id: "conc-fund",
-                nome: "Nível Fundamental",
-                concursos: [
-                    {
-                        id: "pref-guarda",
-                        nome: "Prefeituras (Guarda / Serviços)",
-                        disciplinas: [
-                            {
-                                id: "fund-port",
-                                nome: "Língua Portuguesa",
-                                topicos: [
-                                    { id: "f-port-1", titulo: "Ortografia Básica", youtubeId: "dQw4w9WgXcQ", descricao: "Regras ortográficas.", material: "Sem material." }
-                                ]
-                            }
-                        ]
-                    }
-                ]
-            },
+    "id": "concursos",
+    "subcategorias": [
+        {
+            "id": "nivel-fundamental",
+            "nome": "Nível Fundamental",
+            "concursos": [
+                {
+                    "id": "prefeituras-guarda-servicos",
+                    "nome": "Prefeituras (Guarda / Serviços)",
+                    "disciplinas": [
+                        {
+                            "id": "lingua-portuguesa",
+                            "nome": "Língua Portuguesa",
+                            "topicos": [
+                                {
+                                    "id": "lingua-portuguesa-1",
+                                    "titulo": "1 Compreensão e interpretação de textos de gêneros variados.",
+                                    "youtubeId": "22iA3PPjr7c",
+                                    "descricao": "Aula sobre 1 Compreensão e interpretação de textos de gêneros variados..",
+                                    "material": "Sem material."
+                                },
+                                {
+                                    "id": "lingua-portuguesa-2",
+                                    "titulo": "2 Reconhecimento de tipos e gêneros textuais.",
+                                    "youtubeId": "keri15mSleA",
+                                    "descricao": "Aula sobre 2 Reconhecimento de tipos e gêneros textuais..",
+                                    "material": "Sem material."
+                                },
+                                {
+                                    "id": "lingua-portuguesa-3",
+                                    "titulo": "3 Domínio da ortografia oficial.",
+                                    "youtubeId": "1fI0TxSj_iA",
+                                    "descricao": "Aula sobre 3 Domínio da ortografia oficial..",
+                                    "material": "Sem material."
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}
+,
             {
                 id: "conc-med",
                 nome: "Nível Médio",
