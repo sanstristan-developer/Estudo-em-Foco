@@ -320,15 +320,23 @@
             max-width: 850px;
         }
 
-        .player-wrapper.video-inverted { filter: invert(1) hue-rotate(180deg); }
+       .player-wrapper.video-inverted { 
+    filter: invert(1) hue-rotate(180deg); 
+}
 
-        .player-wrapper:fullscreen,
-        .player-wrapper:-webkit-full-screen {
-            max-width: 100%;
-            width: 100vw;
-            height: 100vh;
-            border-radius: 0;
-        }
+.player-wrapper:fullscreen,
+.player-wrapper:-webkit-full-screen {
+    max-width: 100%;
+    width: 100vw;
+    height: 100vh;
+    border-radius: 0;
+}
+
+/* Mantém o filtro de inversão ativo quando o iframe estiver em tela cheia */
+iframe:fullscreen,
+iframe:-webkit-full-screen { 
+    filter: inherit; 
+}
 
         #youtube-player { width: 100%; height: 100%; border: none; }
 
