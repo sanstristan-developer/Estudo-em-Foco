@@ -560,6 +560,7 @@ iframe:-webkit-full-screen {
         .resource-card a:hover { text-decoration: underline; }
 
         /* MEDIA QUERIES PARA MOBILE */
+        /* MEDIA QUERIES PARA MOBILE */
         @media (max-width: 900px) {
             body { flex-direction: column; }
 
@@ -594,6 +595,11 @@ iframe:-webkit-full-screen {
             .flashcard-section {
                 width: 100%;
                 max-height: none;
+            }
+
+            /* NOVO: Limita o container a 140px (altura exata de 1 card por vez) no Mobile */
+            .flashcards-scroll-container {
+                max-height: 140px;
             }
 
             .header h1 { font-size: 1.4rem; }
@@ -1362,6 +1368,13 @@ iframe:-webkit-full-screen {
             flashcardsAtuais = dadosSalvos ? JSON.parse(dadosSalvos) : [];
             modoCriacao = false;
             
+            // Verifica a largura da tela para decidir se abre oculto (PC) ou aberto (Mobile)
+            if (window.innerWidth <= 900) {
+                isFlashcardMinimizado = false; // No Mobile inicia expandido
+            } else {
+                isFlashcardMinimizado = true;  // No PC inicia oculto/minimizado
+            }
+
             atualizarExibicaoFlashcard();
             renderizarListaFlashcards();
         }
