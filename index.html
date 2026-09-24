@@ -1534,9 +1534,11 @@
         }
 
         function apagarNota(index) {
-            anotacoesAtuais.splice(index, 1);
-            salvarAnotacoesNoStorage();
-            renderizarListaAnotacoes();
+            if (confirm("Excluir anotação?")) {
+                anotacoesAtuais.splice(index, 1);
+                salvarAnotacoesNoStorage();
+                renderizarListaAnotacoes();
+            }
         }
 
         function escaparHTML(str) {
