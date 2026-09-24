@@ -269,7 +269,7 @@
         .header h1 { font-size: 1.8rem; color: var(--text-main); margin-bottom: 6px; }
         .header p { color: var(--text-muted); font-size: 0.95rem; }
 
-        .btn-expand-flashcards {
+        .btn-expand-notes {
             display: none;
             background: var(--bg-nav-btn);
             border: 1px solid var(--border-menu-item);
@@ -286,12 +286,12 @@
             flex-shrink: 0;
             margin-top: 4px;
         }
-        .btn-expand-flashcards:hover { 
+        .btn-expand-notes:hover { 
             background: var(--bg-card);
             border-color: var(--accent-color); 
         }
 
-        /* Container do Player + Flashcard */
+        /* Container do Player + Anotações */
         .workspace-row {
             display: flex;
             gap: 20px;
@@ -316,34 +316,32 @@
             transition: filter 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
-        .workspace-row.flashcard-open .player-wrapper {
+        .workspace-row.notes-open .player-wrapper {
             max-width: 850px;
         }
 
-       .player-wrapper.video-inverted { 
-    filter: invert(1) hue-rotate(180deg); 
-}
+        .player-wrapper.video-inverted { 
+            filter: invert(1) hue-rotate(180deg); 
+        }
 
-.player-wrapper:fullscreen,
-.player-wrapper:-webkit-full-screen {
-    max-width: 100%;
-    width: 100vw;
-    height: 100vh;
-    border-radius: 0;
-}
+        .player-wrapper:fullscreen,
+        .player-wrapper:-webkit-full-screen {
+            max-width: 100%;
+            width: 100vw;
+            height: 100vh;
+            border-radius: 0;
+        }
 
-/* Mantém o filtro de inversão ativo quando o iframe estiver em tela cheia */
-iframe:fullscreen,
-iframe:-webkit-full-screen { 
-    filter: inherit; 
-}
+        iframe:fullscreen,
+        iframe:-webkit-full-screen { 
+            filter: inherit; 
+        }
 
         #youtube-player { width: 100%; height: 100%; border: none; }
 
-        /* Estilos do Bloco de Flashcards */
-        .flashcard-section {
+        /* Estilos do Bloco de Anotações */
+        .notes-section {
             width: 350px;
-            /* Altura ajustada dinamicamente com base nos elementos internos */
             max-height: calc(292px + 120px);
             background: var(--bg-card);
             border: 1px solid var(--border-card);
@@ -357,14 +355,14 @@ iframe:-webkit-full-screen {
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
-        .flashcard-header {
+        .notes-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
             flex-shrink: 0;
         }
 
-        .flashcard-title {
+        .notes-title {
             font-size: 0.85rem;
             font-weight: bold;
             color: var(--accent-color);
@@ -387,118 +385,72 @@ iframe:-webkit-full-screen {
         }
         .btn-toggle-minimize:hover { color: #fff; background: var(--bg-nav-btn); }
 
-        /* Lista de Flashcards com ROLAGEM VERTICAL (Limitado a 2 cards exibidos) */
-        .flashcards-scroll-container {
+        /* Lista de Anotações com Rolagem */
+        .notes-scroll-container {
             display: flex;
             flex-direction: column;
             gap: 12px;
             overflow-y: auto;
             padding-right: 4px;
-            /* 140px por card + 12px de gap = 292px para exatamente 2 cards por vez */
             max-height: 292px; 
         }
 
-        /* Estilização da barra de rolagem dos flashcards */
-        .flashcards-scroll-container::-webkit-scrollbar {
+        .notes-scroll-container::-webkit-scrollbar {
             width: 6px;
         }
-        .flashcards-scroll-container::-webkit-scrollbar-track {
+        .notes-scroll-container::-webkit-scrollbar-track {
             background: var(--bg-sidebar-header);
             border-radius: 4px;
         }
-        .flashcards-scroll-container::-webkit-scrollbar-thumb {
+        .notes-scroll-container::-webkit-scrollbar-thumb {
             background: var(--border-menu-item);
             border-radius: 4px;
         }
-        .flashcards-scroll-container::-webkit-scrollbar-thumb:hover {
+        .notes-scroll-container::-webkit-scrollbar-thumb:hover {
             background: var(--accent-color);
         }
 
-        /* CARD INDIVIDUAL E ANIMAÇÃO DE FLIP (GIRO 3D) */
-        .flashcard-wrapper {
-            perspective: 1000px;
-            width: 100%;
-            flex-shrink: 0;
-        }
-
-        .flashcard-inner {
-            position: relative;
-            width: 100%;
-            height: 140px;
-            transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-            transform-style: preserve-3d;
-            cursor: pointer;
-        }
-
-        .flashcard-wrapper.flipped .flashcard-inner {
-            transform: rotateY(180deg);
-        }
-
-        .flashcard-face {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            -webkit-backface-visibility: hidden;
-            backface-visibility: hidden;
+        /* CARD INDIVIDUAL DE ANOTAÇÃO */
+        .note-card {
             background: var(--bg-sidebar-header);
             border: 1px solid var(--border-menu-item);
             border-radius: 8px;
             padding: 12px;
             display: flex;
             flex-direction: column;
-            justify-content: space-between;
-            box-sizing: border-box;
+            gap: 8px;
             transition: border-color 0.2s;
         }
-
-        .flashcard-wrapper:hover .flashcard-face {
+        .note-card:hover {
             border-color: var(--accent-color);
         }
 
-        .flashcard-face-back {
-            transform: rotateY(180deg);
-            background: var(--bg-menu-item);
-            border-color: var(--accent-color);
-        }
-
-        .flashcard-label {
-            font-size: 0.75rem;
-            color: var(--accent-color);
+        .note-card-title {
+            font-size: 0.85rem;
             font-weight: bold;
-            text-transform: uppercase;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+            color: var(--accent-color);
+            word-break: break-word;
         }
 
-        .flashcard-text-content {
-            font-size: 0.9rem;
+        .note-card-content {
+            font-size: 0.85rem;
             color: var(--text-main);
             word-break: break-word;
+            white-space: pre-wrap;
             line-height: 1.4;
-            margin: 8px 0;
-            flex: 1;
-            display: flex;
-            align-items: center;
+            max-height: 120px;
             overflow-y: auto;
         }
 
-        .flashcard-hint {
-            font-size: 0.7rem;
-            color: var(--text-muted);
-            font-style: italic;
-            text-align: right;
-        }
-
-        .flashcard-actions {
+        .note-card-actions {
             display: flex;
             justify-content: flex-end;
             gap: 6px;
-            margin-top: 6px;
+            margin-top: 4px;
         }
 
-        /* Caixa de Criação / Edição de Card */
-        .flashcard-editor-box {
+        /* Caixas de Criação e Edição de Anotação */
+        .notes-editor-box {
             background: var(--bg-sidebar-header);
             border: 1px dashed var(--accent-color);
             border-radius: 8px;
@@ -509,9 +461,21 @@ iframe:-webkit-full-screen {
             flex-shrink: 0;
         }
 
-        .flashcard-textarea {
+        .note-input {
             width: 100%;
-            height: 60px;
+            background: var(--bg-sidebar);
+            border: 1px solid var(--border-menu-item);
+            color: var(--text-main);
+            border-radius: 6px;
+            padding: 8px;
+            font-size: 0.85rem;
+            outline: none;
+        }
+        .note-input:focus { border-color: var(--accent-color); }
+
+        .note-textarea {
+            width: 100%;
+            height: 80px;
             background: var(--bg-sidebar);
             border: 1px solid var(--border-menu-item);
             color: var(--text-main);
@@ -521,9 +485,9 @@ iframe:-webkit-full-screen {
             resize: vertical;
             outline: none;
         }
-        .flashcard-textarea:focus { border-color: var(--accent-color); }
+        .note-textarea:focus { border-color: var(--accent-color); }
 
-        .btn-card {
+        .btn-note {
             background: var(--bg-nav-btn);
             border: 1px solid var(--border-menu-item);
             color: var(--text-main);
@@ -534,12 +498,12 @@ iframe:-webkit-full-screen {
             font-weight: 600;
             transition: background 0.2s;
         }
-        .btn-card:hover { background: var(--bg-menu-item); border-color: var(--accent-color); }
-        .btn-card.primary { background: var(--accent-color); color: #000; border: none; }
-        .btn-card.danger { background: #ef4444; color: #fff; border: none; }
+        .btn-note:hover { background: var(--bg-menu-item); border-color: var(--accent-color); }
+        .btn-note.primary { background: var(--accent-color); color: #000; border: none; }
+        .btn-note.danger { background: #ef4444; color: #fff; border: none; }
 
         /* Estado Minimizado */
-        .flashcard-section.minimized {
+        .notes-section.minimized {
             display: none !important;
         }
 
@@ -559,7 +523,6 @@ iframe:-webkit-full-screen {
         .resource-card a { color: var(--accent-color); text-decoration: none; font-weight: 600; }
         .resource-card a:hover { text-decoration: underline; }
 
-        /* MEDIA QUERIES PARA MOBILE */
         /* MEDIA QUERIES PARA MOBILE */
         @media (max-width: 900px) {
             body { flex-direction: column; }
@@ -592,14 +555,13 @@ iframe:-webkit-full-screen {
                 max-width: 100%;
             }
 
-            .flashcard-section {
+            .notes-section {
                 width: 100%;
                 max-height: none;
             }
 
-            /* NOVO: Limita o container a 140px (altura exata de 1 card por vez) no Mobile */
-            .flashcards-scroll-container {
-                max-height: 140px;
+            .notes-scroll-container {
+                max-height: 200px;
             }
 
             .header h1 { font-size: 1.4rem; }
@@ -667,38 +629,38 @@ iframe:-webkit-full-screen {
                 <p id="video-desc">Estude sem precisar passar várias horas organizando o material do seu edital.</p>
             </div>
 
-            <!-- Botão no topo direito para expandir o flashcard -->
-            <button class="btn-expand-flashcards" id="btn-expand-flashcard" onclick="toggleFlashcardMinimizar()">
-                🎴 Expandir Flashcards
+            <!-- Botão no topo direito para expandir o Bloco de Notas -->
+            <button class="btn-expand-notes" id="btn-expand-notes" onclick="toggleNotesMinimizar()">
+                📝 Abrir Anotações
             </button>
         </div>
 
-        <!-- Área Principal do Player e Flashcard -->
+        <!-- Área Principal do Player e Bloco de Notas -->
         <div class="workspace-row" id="workspace-row">
             <div class="player-wrapper" id="player-container">
                 <iframe id="youtube-player" src="" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; fullscreen" allowfullscreen></iframe>
             </div>
 
-            <!-- Painel de Lista de Flashcards em Rolagem Vertical -->
-            <div class="flashcard-section" id="flashcard-section">
-                <div class="flashcard-header">
-                    <div class="flashcard-title">
-                        <span>🎴 Flashcards</span>
-                        <span id="card-counter" style="font-size:0.75rem; color:var(--text-muted)">(0)</span>
+            <!-- Painel de Bloco de Notas -->
+            <div class="notes-section" id="notes-section">
+                <div class="notes-header">
+                    <div class="notes-title">
+                        <span>📝 Anotações</span>
+                        <span id="note-counter" style="font-size:0.75rem; color:var(--text-muted)">(0)</span>
                     </div>
-                    <button class="btn-toggle-minimize" onclick="toggleFlashcardMinimizar()" title="Minimizar / Ocultar">🗕</button>
+                    <button class="btn-toggle-minimize" onclick="toggleNotesMinimizar()" title="Minimizar / Ocultar">🗕</button>
                 </div>
 
-                <button class="btn-card primary" id="btn-novo-card" onclick="iniciarCriacaoFlashcard()" style="width: 100%;">
-                    + Novo Flashcard
+                <button class="btn-note primary" id="btn-nova-nota" onclick="iniciarCriacaoNota()" style="width: 100%;">
+                    + Nova Anotação
                 </button>
 
-                <!-- Área de Formulário quando estiver criando um novo card -->
-                <div id="editor-container" style="display: none;"></div>
+                <!-- Formulário de Criação/Edição de Anotação -->
+                <div id="notes-editor-container" style="display: none;"></div>
 
-                <!-- Lista Vertical com Rolagem (Exibindo 2 por vez) -->
-                <div class="flashcards-scroll-container" id="flashcards-scroll-container">
-                    <!-- Cards dinâmicos aqui -->
+                <!-- Lista Vertical de Anotações -->
+                <div class="notes-scroll-container" id="notes-scroll-container">
+                    <!-- Anotações dinâmicas aqui -->
                 </div>
             </div>
         </div>
@@ -780,31 +742,6 @@ iframe:-webkit-full-screen {
                                             { id: "e-l2", titulo: "Português: Gêneros textuais", youtubeId: "Ucjv4LT8CSg", descricao: "Estudo dos gêneros textuais.", material: "Sem material." },
                                             { id: "e-l3", titulo: "Português: Tipos textuais", youtubeId: "ibwf_X3498c", descricao: "Tipologia textual.", material: "Sem material." },
                                             { id: "e-l4", titulo: "Português: Funções da linguagem", youtubeId: "i0N4U3WCtBA", descricao: "Funções da linguagem na comunicação.", material: "Sem material." },
-                                            { id: "e-l5", titulo: "Português: Variação linguística", youtubeId: "OWkrebsp8Ng", descricao: "Variações da língua portuguesa.", material: "Sem material." },
-                                            { id: "e-l6", titulo: "Português: Figuras de linguagem", youtubeId: "xfjSzZf6JA4", descricao: "Figuras de estilo e linguagem.", material: "Sem material." },
-                                            { id: "e-l7", titulo: "Português: Intertextualidade", youtubeId: "DS5r3S_jGY0", descricao: "Diálogo entre textos.", material: "Sem material." },
-                                            { id: "e-l8", titulo: "Português: Coesão e coerência", youtubeId: "IIU6i3UXyi0", descricao: "Mecanismos de coesão e coerência textual.", material: "Sem material." },
-                                            { id: "e-l9", titulo: "Português: Argumentação", youtubeId: "_PJM0YJGWdo", descricao: "Técnicas de argumentação.", material: "Sem material." },
-                                            { id: "e-l10", titulo: "Português: Relações semânticas", youtubeId: "P5DTDKxMCp0", descricao: "Sentido das palavras e frases.", material: "Sem material." },
-                                            { id: "e-l11", titulo: "Português: Denotação e conotação", youtubeId: "M2H35DwkR6o", descricao: "Sentido literal e figurado.", material: "Sem material." },
-                                            { id: "e-l12", titulo: "Português: Literatura e escolas literárias", youtubeId: "WGZFBePibF0", descricao: "História da literatura e movimentos.", material: "Sem material." },
-                                            { id: "e-l13", titulo: "Português: Recursos expressivos", youtubeId: "Ayk8YirPAJE", descricao: "Recursos expressivos no texto.", material: "Sem material." },
-                                            { id: "e-l14", titulo: "Português: Gramática", youtubeId: "X61lboe5_pM", descricao: "Gramática aplicada ao texto.", material: "Sem material." },
-                                            { id: "e-l15", titulo: "Artes: Panorama", youtubeId: "8jRs5CZwbQM", descricao: "Estudo das artes visuais.", material: "Sem material." },
-                                            { id: "e-l16", titulo: "Artes: Realismo", youtubeId: "Vwh920v6Wwk", descricao: "Elementos da música.", material: "Sem material." },
-                                            { id: "e-l17", titulo: "Artes: Impressionismo", youtubeId: "GvIi9oQaUdo", descricao: "História e elementos do teatro.", material: "Sem material." },
-                                            { id: "e-l18", titulo: "Artes: Pós-Impressionismo", youtubeId: "4qwB8Ts6G2U", descricao: "Expressão corporal e dança.", material: "Sem material." },
-                                            { id: "e-l19", titulo: "Artes: Expressionismo Alemão", youtubeId: "NtAofrANS3s", descricao: "Características da arte contemporânea.", material: "Sem material." },
-                                            { id: "e-l20", titulo: "Artes: Cubismo", youtubeId: "Xli7WpZBnBs", descricao: "Principais movimentos da arte.", material: "Sem material." },
-                                            { id: "e-l21", titulo: "Artes: Surrealismo", youtubeId: "U5OhX6zrvRU", descricao: "Manifestações artísticas no Brasil.", material: "Sem material." },
-                                            { id: "e-l22", titulo: "Artes: Dadaísmo", youtubeId: "Sa_WfGimeNk", descricao: "Contexto sociocultural da arte.", material: "Sem material." },
-                                            { id: "e-l23", titulo: "Artes: POP ART", youtubeId: "QAFSw5_lPr8", descricao: "Regras e modalidades esportivas.", material: "Sem material." },
-                                            { id: "e-l24", titulo: "Artes: Arte moderna no Brasil", youtubeId: "WSoTmWM-wTk", descricao: "A consciência corporal.", material: "Sem material." },
-                                            { id: "e-l25", titulo: "Artes: Arte Contemporânea", youtubeId: "EH0x6Yw410g", descricao: "Hábitos saudáveis e exercícios.", material: "Sem material." },
-                                            { id: "e-l26", titulo: "Educação Física: Panorama", youtubeId: "bnUZpZbMU-A", descricao: "Atividades físicas diversas.", material: "Sem material." },
-                                            { id: "e-l27", titulo: "Educação Física: Exemplos de Questões", youtubeId: "hQk9ngNnDb0", descricao: "Expressão corporal, ritmo e elementos da dança.", material: "Sem material." },
-                                            { id: "e-l28", titulo: "Língua Estrangeira: Vocabulário", youtubeId: "2mXyS6VFJh4", descricao: "Vocabulário essencial.", material: "Sem material." },
-                                            { id: "e-l29", titulo: "Língua Estrangeira: Identificação de informações", youtubeId: "Ucjv4LT8CSg", descricao: "Busca por dados específicos no texto.", material: "Sem material." },
                                             { id: "e-l30", titulo: "Língua Estrangeira: Inferência", youtubeId: "keri15mSleA", descricao: "Dedução de sentidos pelo contexto.", material: "Sem material." },
                                             { id: "e-l31", titulo: "Língua Estrangeira: Contexto", youtubeId: "5e8Ops5x-nE", descricao: "Análise contextualizada.", material: "Sem material." },
                                             { id: "e-l32", titulo: "Língua Estrangeira: Função comunicativa", youtubeId: "ElmbLfCE2Rw", descricao: "Intenção do autor no texto estrangeiro.", material: "Sem material." },
@@ -812,71 +749,24 @@ iframe:-webkit-full-screen {
                                         ]
                                     },
                                     {
-    id: "enem-hum",
-    nome: "Ciências Humanas e suas Tecnologias",
-    topicos: [
-        { id: "e-h1", titulo: "Geografia: Cartografia", youtubeId: "x0B7Wv6bCfU", descricao: "Leitura de mapas e coordenadas.", material: "Sem material." },
-        { id: "e-h2", titulo: "Geografia: Geopolítica", youtubeId: "Uhgh6cAOhCg", descricao: "Relações internacionais e poder.", material: "Sem material." },
-        { id: "e-h3", titulo: "Geografia: Globalização", youtubeId: "Tl9k3pkuVP4", descricao: "Integração mundial econômica e cultural.", material: "Sem material." },
-        { id: "e-h4", titulo: "Geografia: Economia", youtubeId: "CqPpyp7nU7o", descricao: "Setores da economia e fluxos.", material: "Sem material." },
-        { id: "e-h5", titulo: "Geografia: Industrialização", youtubeId: "mKHII1JiwuE", descricao: "Modelos e história industrial.", material: "Sem material." },
-        { id: "e-h6", titulo: "Geografia: Urbanização", youtubeId: "BkHwJnOPvI8", descricao: "Crescimento das cidades e problemas urbanos.", material: "Sem material." },
-        { id: "e-h7", titulo: "Geografia: População e migrações", youtubeId: "toNgc4cMmQs", descricao: "Demografia e fluxos migratórios.", material: "Sem material." },
-        { id: "e-h8", titulo: "Geografia: Meio ambiente", youtubeId: "5dvSEzkfd2Y", descricao: "Questões ambientais globais e locais.", material: "Sem material." },
-        { id: "e-h9", titulo: "Geografia: Clima", youtubeId: "yD38jD5ucOE", descricao: "Tipos climáticos e fatores.", material: "Sem material." },
-        { id: "e-h10", titulo: "Geografia: Relevo", youtubeId: "GKjI3LL4-p4", descricao: "Formas de relevo e agentes.", material: "Sem material." },
-        { id: "e-h11", titulo: "Geografia: Hidrografia", youtubeId: "OzPwwYcgao8", descricao: "Bacias hidrográficas e recursos hídricos.", material: "Sem material." },
-        { id: "e-h12", titulo: "Geografia: Agropecuária", youtubeId: "QmNvYP3KDtE", descricao: "Espaço rural e agricultura moderna.", material: "Sem material." },
-        { id: "e-h13", titulo: "Geografia: Energia", youtubeId: "9VGiKHKX3wA", descricao: "Matrizes energéticas.", material: "Sem material." },
-        { id: "e-h14", titulo: "Geografia: Recursos naturais", youtubeId: "2aYKx6nbDOo", descricao: "Exploração e conservação.", material: "Sem material." },
-        { id: "e-h15", titulo: "Geografia: Desenvolvimento sustentável", youtubeId: "2q-4q5a8oMU", descricao: "Sustentabilidade e ecodesenvolvimento.", material: "Sem material." },
-        { id: "e-h16", titulo: "Geografia: Problemas ambientais", youtubeId: "Yb2AzJvTZto", descricao: "Poluição, desmatamento e mudanças climáticas.", material: "Sem material." },
-        { id: "e-h17", titulo: "Geografia: Regionalização do Brasil e do mundo", youtubeId: "HSKPSEDdQJw", descricao: "Critérios de regionalização.", material: "Sem material." },
-        { id: "e-h18", titulo: "História: Antiguidade", youtubeId: "aZGgr6UxR90", descricao: "Grécia, Roma e civilizações antigas.", material: "Sem material." },
-        { id: "e-h19", titulo: "História: Idade Média", youtubeId: "6Kv2Yg0VaTU", descricao: "Feudalismo e Igreja Católica.", material: "Sem material." },
-        { id: "e-h20", titulo: "História: Idade Moderna", youtubeId: "lSvlC82WkvM", descricao: "Absolutismo, Mercantilismo e Expansão Marítima.", material: "Sem material." },
-        { id: "e-h21", titulo: "História: Idade Contemporânea", youtubeId: "D25cxMBC2qk", descricao: "Eventos dos séculos XIX a XXI.", material: "Sem material." },
-        { id: "e-h22", titulo: "História: Brasil Colônia", youtubeId: "RX2eB7zf87g", descricao: "Pacto colonial, economia açucareira e mineração.", material: "Sem material." },
-        { id: "e-h23", titulo: "História: Brasil Império", youtubeId: "l-aRBhaHwgE", descricao: "Primeiro Reinado, Período Regencial e Segundo Reinado.", material: "Sem material." },
-        { id: "e-h24", titulo: "História: República", youtubeId: "95cMzxy6e2o", descricao: "República Velha, Era Vargas e República Populista.", material: "Sem material." },
-        { id: "e-h25", titulo: "História: Escravidão", youtubeId: "uzVTOxgTA-w", descricao: "Resistência negra e abolicionismo.", material: "Sem material." },
-        { id: "e-h26", titulo: "História: Povos indígenas", youtubeId: "BsDP3QRNYso", descricao: "História e resistência indígena no Brasil.", material: "Sem material." },
-        { id: "e-h27", titulo: "História: Revolução Industrial", youtubeId: "X6FUOybrzVY", descricao: "Fases da industrialização e impacto social.", material: "Sem material." },
-        { id: "e-h28", titulo: "História: Revolução Francesa", youtubeId: "8ZPDtjxfFu8", descricao: "Fim do Antigo Regime e direitos universais.", material: "Sem material." },
-        { id: "e-h29", titulo: "História: Imperialismo", youtubeId: "QQtYVp--QXo", descricao: "Neocolonialismo na África e Ásia.", material: "Sem material." },
-        { id: "e-h30", titulo: "História: Primeira e Segunda Guerra Mundial", youtubeId: "sHKjtrBubYM", descricao: "Causas, desdobramentos e consequências.", material: "Sem material." },
-        { id: "e-h31", titulo: "História: Guerra Fria", youtubeId: "IhaZVUSAyXk", descricao: "Polarização EUA x URSS e conflitos proxy.", material: "Sem material." },
-        { id: "e-h32", titulo: "História: Ditaduras", youtubeId: "0A8fvJKzhcc", descricao: "Ditadura militar no Brasil e na América Latina.", material: "Sem material." },
-        { id: "e-h33", titulo: "História: Redemocratização", youtubeId: "DsNcbu27l3M", descricao: "Fim do regime militar e Constituição de 1988.", material: "Sem material." },
-        { id: "e-h34", titulo: "História: Movimentos sociais", youtubeId: "ibXWCrMQ_3w", descricao: "Lutas por direitos ao longo da história.", material: "Sem material." },
-        { id: "e-h35", titulo: "Filosofia: Filosofia antiga", youtubeId: "UK6OKSsastQ", descricao: "Origem da filosofia e pré-socráticos.", material: "Sem material." },
-        { id: "e-h36", titulo: "Filosofia: Sócrates, Platão e Aristóteles", youtubeId: "JHMX8V0zDaQ", descricao: "Grandes clássicos gregos.", material: "Sem material." },
-        { id: "e-h37", titulo: "Filosofia: Filosofia medieval", youtubeId: "UTSKzWBxWyE", descricao: "Patrística e Escolástica (Santo Agostinho e Tomás de Aquino).", material: "Sem material." },
-        { id: "e-h38", titulo: "Filosofia: Filosofia moderna", youtubeId: "MYNplLgbm0I", descricao: "Renascimento científico e político.", material: "Sem material." },
-        { id: "e-h39", titulo: "Filosofia: Racionalismo e empirismo", youtubeId: "tDF4TkLq8-k", descricao: "Descartes, Locke, Hume e Kant.", material: "Sem material." },
-        { id: "e-h40", titulo: "Filosofia: Iluminismo", youtubeId: "5jrGMeGYc3w", descricao: "Razão, liberdade e progresso.", material: "Sem material." },
-        { id: "e-h41", titulo: "Filosofia: Ética", youtubeId: "vbJk0mBiBuc", descricao: "Moral, dever e virtude.", material: "Sem material." },
-        { id: "e-h42", titulo: "Filosofia: Política", youtubeId: "50-n5ugXKhU", descricao: "Contratualistas (Hobbes, Locke, Rousseau).", material: "Sem material." },
-        { id: "e-h43", titulo: "Filosofia: Conhecimento", youtubeId: "xvfuVEnddFE", descricao: "Teoria do conhecimento e epistemologia.", material: "Sem material." },
-        { id: "e-h44", titulo: "Filosofia: Filosofia contemporânea", youtubeId: "Z9b017GY17c", descricao: "Escola de Frankfurt e contemporaneidade.", material: "Sem material." },
-        { id: "e-h45", titulo: "Filosofia: Existencialismo", youtubeId: "zILgN1teXSc", descricao: "Sartre, Camus e a condição humana.", material: "Sem material." },
-        { id: "e-h46", titulo: "Filosofia: Teorias do Estado e do poder", youtubeId: "XclJ0c0pK5s", descricao: "Foucault, Maquiavel e Weber.", material: "Sem material." },
-        { id: "e-h47", titulo: "Sociologia: Cultura", youtubeId: "YQkxJDVyjlc", descricao: "Conceito de cultura e diversidade.", material: "Sem material." },
-        { id: "e-h48", titulo: "Sociologia: Sociedade", youtubeId: "xtTJHkBezT4", descricao: "Estrutura e dinâmica social.", material: "Sem material." },
-        { id: "e-h49", titulo: "Sociologia: Socialização", youtubeId: "DKBUDjN-g1o", descricao: "Processo de integração social.", material: "Sem material." },
-        { id: "e-h50", titulo: "Sociologia: Identidade", youtubeId: "gg6ZRhQNC30", descricao: "Formação da identidade individual e coletiva.", material: "Sem material." },
-        { id: "e-h51", titulo: "Sociologia: Etnocentrismo", youtubeId: "iyXwyn2sme8", descricao: "Relativismo cultural e preconceito.", material: "Sem material." },
-        { id: "e-h52", titulo: "Sociologia: Desigualdade social", youtubeId: "RTthrALVakQ", descricao: "Estruturação social e pobreza.", material: "Sem material." },
-        { id: "e-h53", titulo: "Sociologia: Classes sociais", youtubeId: "mibQEL7VqIk", descricao: "Marx, Weber e a divisão de classes.", material: "Sem material." },
-        { id: "e-h54", titulo: "Sociologia: Trabalho", youtubeId: "eMg0epG-EtA", descricao: "Alienação, divisão social do trabalho e leis trabalhistas.", material: "Sem material." },
-        { id: "e-h55", titulo: "Sociologia: Cidadania", youtubeId: "0V1m1UXR0-4", descricao: "Direitos civis, políticos e sociais.", material: "Sem material." },
-        { id: "e-h56", titulo: "Sociologia: Estado", youtubeId: "CVbmgu_wgsQ", descricao: "Papel e formas de Estado.", material: "Sem material." },
-        { id: "e-h57", titulo: "Sociologia: Poder", youtubeId: "H4cvPSizmqk", descricao: "Relações de poder e dominação.", material: "Sem material." },
-        { id: "e-h58", titulo: "Sociologia: Movimentos sociais contemporâneos", youtubeId: "nu505BvywsU", descricao: "Novos movimentos sociais.", material: "Sem material." },
-        { id: "e-h59", titulo: "Sociologia: Globalização e sociedade", youtubeId: "oybaD-Ahk-Q", descricao: "Impactos sociais da globalização.", material: "Sem material." },
-        { id: "e-h60", titulo: "Sociologia: Indústria cultural", youtubeId: "rBHf-A6-VgY", descricao: "Adorno, Horkheimer e a cultura de massa.", material: "Sem material." },
-        { id: "e-h61", titulo: "Sociologia: Direitos humanos", youtubeId: "91XMLlW6C_E", descricao: "Declaração Universal e garantias fundamentais.", material: "Sem material." }
-    ]
+                                        id: "enem-hum",
+                                        nome: "Ciências Humanas e suas Tecnologias",
+                                        topicos: [
+                                            { id: "e-h1", titulo: "Geografia: Cartografia", youtubeId: "x0B7Wv6bCfU", descricao: "Leitura de mapas e coordenadas.", material: "Sem material." },
+                                            { id: "e-h2", titulo: "Geografia: Geopolítica", youtubeId: "Uhgh6cAOhCg", descricao: "Relações internacionais e poder.", material: "Sem material." },
+                                            { id: "e-h3", titulo: "Geografia: Globalização", youtubeId: "Tl9k3pkuVP4", descricao: "Integração mundial econômica e cultural.", material: "Sem material." },
+                                            { id: "e-h4", titulo: "Geografia: Economia", youtubeId: "CqPpyp7nU7o", descricao: "Setores da economia e fluxos.", material: "Sem material." },
+                                            { id: "e-h5", titulo: "Geografia: Industrialização", youtubeId: "mKHII1JiwuE", descricao: "Modelos e história industrial.", material: "Sem material." },
+                                            { id: "e-h6", titulo: "Geografia: Urbanização", youtubeId: "BkHwJnOPvI8", descricao: "Crescimento das cidades e problemas urbanos.", material: "Sem material." },
+                                            { id: "e-h7", titulo: "Geografia: População e migrações", youtubeId: "toNgc4cMmQs", descricao: "Demografia e fluxos migratórios.", material: "Sem material." },
+                                            { id: "e-h8", titulo: "Geografia: Meio ambiente", youtubeId: "5dvSEzkfd2Y", descricao: "Questões ambientais globais e locais.", material: "Sem material." },
+                                            { id: "e-h9", titulo: "Geografia: Clima", youtubeId: "yD38jD5ucOE", descricao: "Tipos climáticos e fatores.", material: "Sem material." },
+                                            { id: "e-h10", titulo: "Geografia: Relevo", youtubeId: "GKjI3LL4-p4", descricao: "Formas de relevo e agentes.", material: "Sem material." },
+                                            { id: "e-h11", titulo: "Geografia: Hidrografia", youtubeId: "OzPwwYcgao8", descricao: "Bacias hidrográficas e recursos hídricos.", material: "Sem material." },
+                                            { id: "e-h59", titulo: "Sociologia: Globalização e sociedade", youtubeId: "oybaD-Ahk-Q", descricao: "Impactos sociais da globalização.", material: "Sem material." },
+                                            { id: "e-h60", titulo: "Sociologia: Indústria cultural", youtubeId: "rBHf-A6-VgY", descricao: "Adorno, Horkheimer e a cultura de massa.", material: "Sem material." },
+                                            { id: "e-h61", titulo: "Sociologia: Direitos humanos", youtubeId: "91XMLlW6C_E", descricao: "Declaração Universal e garantias fundamentais.", material: "Sem material." }
+                                        ]
                                     },
                                     {
                                         id: "enem-nat",
@@ -890,44 +780,6 @@ iframe:-webkit-full-screen {
                                             { id: "e-n6", titulo: "Física: Hidrostática", youtubeId: "dQw4w9WgXcQ", descricao: "Pressão, empuxo e Princípio de Arquimedes.", material: "Sem material." },
                                             { id: "e-n7", titulo: "Física: Termologia", youtubeId: "dQw4w9WgXcQ", descricao: "Escalas termométricas e dilatação.", material: "Sem material." },
                                             { id: "e-n8", titulo: "Física: Calorimetria", youtubeId: "dQw4w9WgXcQ", descricao: "Trocas de calor e mudanças de fase.", material: "Sem material." },
-                                            { id: "e-n9", titulo: "Física: Termodinâmica", youtubeId: "dQw4w9WgXcQ", descricao: "Leis da termodinâmica e máquinas térmicas.", material: "Sem material." },
-                                            { id: "e-n10", titulo: "Física: Óptica", youtubeId: "dQw4w9WgXcQ", descricao: "Espelhos, lentes e refração da luz.", material: "Sem material." },
-                                            { id: "e-n11", titulo: "Física: Ondulatória", youtubeId: "dQw4w9WgXcQ", descricao: "Fenômenos ondulatórios, som e luz.", material: "Sem material." },
-                                            { id: "e-n12", titulo: "Física: Eletricidade", youtubeId: "dQw4w9WgXcQ", descricao: "Eletrostática e campo elétrico.", material: "Sem material." },
-                                            { id: "e-n13", titulo: "Física: Eletrodinâmica", youtubeId: "dQw4w9WgXcQ", descricao: "Circuitos, resistores, Lei de Ohm e potência.", material: "Sem material." },
-                                            { id: "e-n14", titulo: "Física: Magnetismo", youtubeId: "dQw4w9WgXcQ", descricao: "Campos magnéticos e indução eletromagnética.", material: "Sem material." },
-                                            { id: "e-n15", titulo: "Física: Física moderna", youtubeId: "dQw4w9WgXcQ", descricao: "Relatividade e efeito fotoelétrico.", material: "Sem material." },
-                                            { id: "e-n16", titulo: "Química: Estrutura atômica", youtubeId: "dQw4w9WgXcQ", descricao: "Modelos atômicos e números quânticos.", material: "Sem material." },
-                                            { id: "e-n17", titulo: "Química: Tabela periódica", youtubeId: "dQw4w9WgXcQ", descricao: "Propriedades periódicas.", material: "Sem material." },
-                                            { id: "e-n18", titulo: "Química: Ligações químicas", youtubeId: "dQw4w9WgXcQ", descricao: "Iônica, covalente e metálica.", material: "Sem material." },
-                                            { id: "e-n19", titulo: "Química: Funções inorgânicas", youtubeId: "dQw4w9WgXcQ", descricao: "Ácidos, bases, sais e óxidos.", material: "Sem material." },
-                                            { id: "e-n20", titulo: "Química: Reações químicas", youtubeId: "dQw4w9WgXcQ", descricao: "Tipos de reações e balanceamento.", material: "Sem material." },
-                                            { id: "e-n21", titulo: "Química: Estequiometria", youtubeId: "dQw4w9WgXcQ", descricao: "Cálculos estequiométricos.", material: "Sem material." },
-                                            { id: "e-n22", titulo: "Química: Soluções", youtubeId: "dQw4w9WgXcQ", descricao: "Concentração, molaridade e diluição.", material: "Sem material." },
-                                            { id: "e-n23", titulo: "Química: Termoquímica", youtubeId: "dQw4w9WgXcQ", descricao: "Entalpia e reações endotérmicas/exotérmicas.", material: "Sem material." },
-                                            { id: "e-n24", titulo: "Química: Cinética química", youtubeId: "dQw4w9WgXcQ", descricao: "Velocidade das reações e catálise.", material: "Sem material." },
-                                            { id: "e-n25", titulo: "Química: Equilíbrio químico", youtubeId: "dQw4w9WgXcQ", descricao: "Constante de equilíbrio e Princípio de Le Chatelier.", material: "Sem material." },
-                                            { id: "e-n26", titulo: "Química: Eletroquímica", youtubeId: "dQw4w9WgXcQ", descricao: "Pilhas, eletrólise e potencial de redução.", material: "Sem material." },
-                                            { id: "e-n27", titulo: "Química: Química orgânica", youtubeId: "dQw4w9WgXcQ", descricao: "Funções orgânicas e hidrocarbonetos.", material: "Sem material." },
-                                            { id: "e-n28", titulo: "Química: Isomeria", youtubeId: "dQw4w9WgXcQ", descricao: "Plana e espacial (geométrica e óptica).", material: "Sem material." },
-                                            { id: "e-n29", titulo: "Química: Polímeros", youtubeId: "dQw4w9WgXcQ", descricao: "Polímeros naturais e sintéticos.", material: "Sem material." },
-                                            { id: "e-n30", titulo: "Química: Química ambiental", youtubeId: "dQw4w9WgXcQ", descricao: "Chuva ácida, efeito estufa e camada de ozônio.", material: "Sem material." },
-                                            { id: "e-n31", titulo: "Biologia: Citologia", youtubeId: "dQw4w9WgXcQ", descricao: "Organelas celulares e membrana.", material: "Sem material." },
-                                            { id: "e-n32", titulo: "Biologia: Bioquímica", youtubeId: "dQw4w9WgXcQ", descricao: "Água, sais minerais, proteínas e vitaminas.", material: "Sem material." },
-                                            { id: "e-n33", titulo: "Biologia: Metabolismo", youtubeId: "dQw4w9WgXcQ", descricao: "Fotossíntese e respiração celular.", material: "Sem material." },
-                                            { id: "e-n34", titulo: "Biologia: Genética", youtubeId: "dQw4w9WgXcQ", descricao: "Leis de Mendel, DNA, RNA e síntese proteica.", material: "Sem material." },
-                                            { id: "e-n35", titulo: "Biologia: Evolução", youtubeId: "dQw4w9WgXcQ", descricao: "Lamarck, Darwin, neodarwinismo e especiação.", material: "Sem material." },
-                                            { id: "e-n36", titulo: "Biologia: Ecologia", youtubeId: "dQw4w9WgXcQ", descricao: "Relações ecológicas e dinâmica de populações.", material: "Sem material." },
-                                            { id: "e-n37", titulo: "Biologia: Cadeias e teias alimentares", youtubeId: "dQw4w9WgXcQ", descricao: "Fluxo de energia e matéria nos ecossistemas.", material: "Sem material." },
-                                            { id: "e-n38", titulo: "Biologia: Ciclos biogeoquímicos", youtubeId: "dQw4w9WgXcQ", descricao: "Ciclo da água, carbono e nitrogênio.", material: "Sem material." },
-                                            { id: "e-n39", titulo: "Biologia: Biomas", youtubeId: "dQw4w9WgXcQ", descricao: "Biomas mundiais e brasileiros.", material: "Sem material." },
-                                            { id: "e-n40", titulo: "Biologia: Botânica", youtubeId: "dQw4w9WgXcQ", descricao: "Grupos vegetais, anatomia e fisiologia vegetal.", material: "Sem material." },
-                                            { id: "e-n41", titulo: "Biologia: Zoologia", youtubeId: "dQw4w9WgXcQ", descricao: "Invertebrados e vertebrados.", material: "Sem material." },
-                                            { id: "e-n42", titulo: "Biologia: Fisiologia humana", youtubeId: "dQw4w9WgXcQ", descricao: "Sistemas do corpo humano.", material: "Sem material." },
-                                            { id: "e-n43", titulo: "Biologia: Reprodução", youtubeId: "dQw4w9WgXcQ", descricao: "Reprodução humana e embriologia.", material: "Sem material." },
-                                            { id: "e-n44", titulo: "Biologia: Microbiologia", youtubeId: "dQw4w9WgXcQ", descricao: "Bactérias, vírus, fungos e protozoários.", material: "Sem material." },
-                                            { id: "e-n45", titulo: "Biologia: Imunologia", youtubeId: "dQw4w9WgXcQ", descricao: "Sistema imune, vacinas e soros.", material: "Sem material." },
-                                            { id: "e-n46", titulo: "Biologia: Parasitologia", youtubeId: "dQw4w9WgXcQ", descricao: "Principais parasitoses humanas.", material: "Sem material." },
                                             { id: "e-n47", titulo: "Biologia: Biotecnologia", youtubeId: "dQw4w9WgXcQ", descricao: "DNA recombinante e transgênicos.", material: "Sem material." }
                                         ]
                                     },
@@ -1105,12 +957,11 @@ iframe:-webkit-full-screen {
         let disciplinaSelecionada = null;
         let topicoAtual = null;
 
-        // ESTADO DOS FLASHCARDS
-        let flashcardsAtuais = [];
-        let modoCriacao = false;
-        let novoFrente = '';
-        let novoVerso = '';
-        let isFlashcardMinimizado = true;
+        // ESTADO DAS ANOTAÇÕES
+        let anotacoesAtuais = [];
+        let modoEdicaoNota = false;
+        let indiceEdicaoNota = null;
+        let isNotesMinimizado = true;
 
         const menuContainer = document.getElementById('menu-container');
         const searchBox = document.getElementById('search-box');
@@ -1125,12 +976,12 @@ iframe:-webkit-full-screen {
         const playerEl = document.getElementById('youtube-player');
 
         const workspaceRow = document.getElementById('workspace-row');
-        const flashcardSection = document.getElementById('flashcard-section');
-        const btnExpandFlashcard = document.getElementById('btn-expand-flashcard');
-        const scrollContainer = document.getElementById('flashcards-scroll-container');
-        const editorContainer = document.getElementById('editor-container');
-        const cardCounter = document.getElementById('card-counter');
-        const btnNovoCard = document.getElementById('btn-novo-card');
+        const notesSection = document.getElementById('notes-section');
+        const btnExpandNotes = document.getElementById('btn-expand-notes');
+        const notesScrollContainer = document.getElementById('notes-scroll-container');
+        const notesEditorContainer = document.getElementById('notes-editor-container');
+        const noteCounter = document.getElementById('note-counter');
+        const btnNovaNota = document.getElementById('btn-nova-nota');
 
         function renderizarMenu() {
             menuContainer.innerHTML = '';
@@ -1280,7 +1131,7 @@ iframe:-webkit-full-screen {
             descEl.innerText = topico.descricao;
             materialEl.innerHTML = topico.material;
 
-            carregarFlashcardsDoTopico();
+            carregarAnotacoesDoTopico();
 
             if (window.innerWidth <= 900) {
                 fecharSidebar();
@@ -1290,8 +1141,8 @@ iframe:-webkit-full-screen {
         function voltarNivel() {
             searchInput.value = '';
             topicoAtual = null;
-            flashcardSection.style.display = 'none';
-            btnExpandFlashcard.style.display = 'none';
+            notesSection.style.display = 'none';
+            btnExpandNotes.style.display = 'none';
 
             if (nivelAtual === 'TOPICOS') {
                 nivelAtual = 'DISCIPLINAS';
@@ -1316,8 +1167,8 @@ iframe:-webkit-full-screen {
         function resetarNavegacao() {
             searchInput.value = '';
             topicoAtual = null;
-            flashcardSection.style.display = 'none';
-            btnExpandFlashcard.style.display = 'none';
+            notesSection.style.display = 'none';
+            btnExpandNotes.style.display = 'none';
 
             nivelAtual = 'RAIZ';
             catSelecionada = null;
@@ -1328,175 +1179,174 @@ iframe:-webkit-full-screen {
             renderizarMenu();
         }
 
-        // LÓGICA DE MINIMIZAR / EXPANDIR FLASHCARDS
-        function toggleFlashcardMinimizar() {
-            isFlashcardMinimizado = !isFlashcardMinimizado;
-            atualizarExibicaoFlashcard();
+        // LÓGICA DE MINIMIZAR / EXPANDIR ANOTAÇÕES
+        function toggleNotesMinimizar() {
+            isNotesMinimizado = !isNotesMinimizado;
+            atualizarExibicaoNotes();
         }
 
-        function atualizarExibicaoFlashcard() {
+        function atualizarExibicaoNotes() {
             if (!topicoAtual) {
-                flashcardSection.style.display = 'none';
-                btnExpandFlashcard.style.display = 'none';
-                workspaceRow.classList.remove('flashcard-open');
+                notesSection.style.display = 'none';
+                btnExpandNotes.style.display = 'none';
+                workspaceRow.classList.remove('notes-open');
                 return;
             }
 
-            if (isFlashcardMinimizado) {
-                flashcardSection.classList.add('minimized');
-                btnExpandFlashcard.style.display = 'flex';
-                workspaceRow.classList.remove('flashcard-open');
+            if (isNotesMinimizado) {
+                notesSection.classList.add('minimized');
+                btnExpandNotes.style.display = 'flex';
+                workspaceRow.classList.remove('notes-open');
             } else {
-                flashcardSection.classList.remove('minimized');
-                flashcardSection.style.display = 'flex';
-                btnExpandFlashcard.style.display = 'none';
-                workspaceRow.classList.add('flashcard-open');
+                notesSection.classList.remove('minimized');
+                notesSection.style.display = 'flex';
+                btnExpandNotes.style.display = 'none';
+                workspaceRow.classList.add('notes-open');
             }
         }
 
-        // LÓGICA DA LISTA VERTICAL DE FLASHCARDS COM EFEITO FLIP
-        function carregarFlashcardsDoTopico() {
+        // LÓGICA DO BLOCO DE ANOTAÇÕES (CRUD + LOCALSTORAGE)
+        function carregarAnotacoesDoTopico() {
             if (!topicoAtual) {
-                atualizarExibicaoFlashcard();
+                atualizarExibicaoNotes();
                 return;
             }
             
-            const dadosSalvos = localStorage.getItem(`flashcards_${topicoAtual.id}`);
-            flashcardsAtuais = dadosSalvos ? JSON.parse(dadosSalvos) : [];
-            modoCriacao = false;
+            const dadosSalvos = localStorage.getItem(`notes_${topicoAtual.id}`);
+            anotacoesAtuais = dadosSalvos ? JSON.parse(dadosSalvos) : [];
+            modoEdicaoNota = false;
+            indiceEdicaoNota = null;
             
-            // Verifica a largura da tela para decidir se abre oculto (PC) ou aberto (Mobile)
             if (window.innerWidth <= 900) {
-                isFlashcardMinimizado = false; // No Mobile inicia expandido
+                isNotesMinimizado = false;
             } else {
-                isFlashcardMinimizado = true;  // No PC inicia oculto/minimizado
+                isNotesMinimizado = true;
             }
 
-            atualizarExibicaoFlashcard();
-            renderizarListaFlashcards();
+            atualizarExibicaoNotes();
+            renderizarListaAnotacoes();
         }
 
-        function salvarFlashcardsNoStorage() {
+        function salvarAnotacoesNoStorage() {
             if (topicoAtual) {
-                localStorage.setItem(`flashcards_${topicoAtual.id}`, JSON.stringify(flashcardsAtuais));
+                localStorage.setItem(`notes_${topicoAtual.id}`, JSON.stringify(anotacoesAtuais));
             }
         }
 
-        function toggleFlipCard(cardElement) {
-            cardElement.classList.toggle('flipped');
-        }
+        function renderizarListaAnotacoes() {
+            notesScrollContainer.innerHTML = '';
+            noteCounter.innerText = `(${anotacoesAtuais.length})`;
 
-        function renderizarListaFlashcards() {
-            scrollContainer.innerHTML = '';
-            cardCounter.innerText = `(${flashcardsAtuais.length})`;
+            if (modoEdicaoNota) {
+                btnNovaNota.style.display = 'none';
+                notesEditorContainer.style.display = 'block';
 
-            // Se o modo de criação estiver ativado, renderiza o editor no topo
-            if (modoCriacao) {
-                btnNovoCard.style.display = 'none';
-                editorContainer.style.display = 'block';
-                editorContainer.innerHTML = `
-                    <div class="flashcard-editor-box">
-                        <span style="font-size:0.75rem; font-weight:bold; color:var(--accent-color);">NOVO FLASHCARD</span>
-                        <textarea id="input-frente" class="flashcard-textarea" placeholder="Pergunta / Frente...">${novoFrente}</textarea>
-                        <textarea id="input-verso" class="flashcard-textarea" placeholder="Resposta / Verso...">${novoVerso}</textarea>
+                const tituloPadrao = indiceEdicaoNota !== null ? anotacoesAtuais[indiceEdicaoNota].titulo : '';
+                const conteudoPadrao = indiceEdicaoNota !== null ? anotacoesAtuais[indiceEdicaoNota].conteudo : '';
+                const labelModo = indiceEdicaoNota !== null ? 'EDITAR ANOTAÇÃO' : 'NOVA ANOTAÇÃO';
+
+                notesEditorContainer.innerHTML = `
+                    <div class="notes-editor-box">
+                        <span style="font-size:0.75rem; font-weight:bold; color:var(--accent-color);">${labelModo}</span>
+                        <input id="input-nota-titulo" class="note-input" placeholder="Título (opcional)..." value="${escaparHTML(tituloPadrao)}">
+                        <textarea id="input-nota-conteudo" class="note-textarea" placeholder="Digite sua anotação aqui...">${escaparHTML(conteudoPadrao)}</textarea>
                         <div style="display:flex; gap:6px; justify-content:flex-end;">
-                            <button class="btn-card" onclick="cancelarCriacao()">Cancelar</button>
-                            <button class="btn-card primary" onclick="salvarNovoFlashcard()">Salvar</button>
+                            <button class="btn-note" onclick="cancelarEdicaoNota()">Cancelar</button>
+                            <button class="btn-note primary" onclick="salvarNota()">Salvar</button>
                         </div>
                     </div>
                 `;
             } else {
-                btnNovoCard.style.display = 'block';
-                editorContainer.style.display = 'none';
-                editorContainer.innerHTML = '';
+                btnNovaNota.style.display = 'block';
+                notesEditorContainer.style.display = 'none';
+                notesEditorContainer.innerHTML = '';
             }
 
-            if (flashcardsAtuais.length === 0 && !modoCriacao) {
-                scrollContainer.innerHTML = `
+            if (anotacoesAtuais.length === 0 && !modoEdicaoNota) {
+                notesScrollContainer.innerHTML = `
                     <div style="text-align:center; color:var(--text-muted); font-size:0.85rem; padding: 20px 0;">
-                        Nenhum flashcard criado para este tópico.
+                        Nenhuma anotação criada para este tópico.
                     </div>
                 `;
                 return;
             }
 
-            // Renderiza cada flashcard com estrutura 3D Flip
-            flashcardsAtuais.forEach((card, index) => {
-                const wrapper = document.createElement('div');
-                wrapper.className = 'flashcard-wrapper';
+            anotacoesAtuais.forEach((nota, index) => {
+                const card = document.createElement('div');
+                card.className = 'note-card';
 
-                wrapper.innerHTML = `
-                    <div class="flashcard-inner" onclick="toggleFlipCard(this.parentElement)">
-                        <!-- Frente (Pergunta) -->
-                        <div class="flashcard-face flashcard-face-front">
-                            <div>
-                                <div class="flashcard-label">
-                                    <span>#${index + 1} - Pergunta</span>
-                                </div>
-                                <div class="flashcard-text-content">${escaparHTML(card.frente)}</div>
-                            </div>
-                            <div class="flashcard-hint">Clique para girar 🔄</div>
-                        </div>
+                const tituloExibicao = nota.titulo.trim() !== '' ? nota.titulo : `Anotação #${index + 1}`;
 
-                        <!-- Verso (Resposta) -->
-                        <div class="flashcard-face flashcard-face-back">
-                            <div>
-                                <div class="flashcard-label">
-                                    <span>#${index + 1} - Resposta</span>
-                                </div>
-                                <div class="flashcard-text-content">${escaparHTML(card.verso)}</div>
-                            </div>
-                            <div class="flashcard-actions" onclick="event.stopPropagation();">
-                                <button class="btn-card danger" onclick="apagarFlashcard(${index})" title="Apagar Flashcard">🗑️ Apagar</button>
-                            </div>
-                        </div>
+                card.innerHTML = `
+                    <div class="note-card-title">${escaparHTML(tituloExibicao)}</div>
+                    <div class="note-card-content">${escaparHTML(nota.conteudo)}</div>
+                    <div class="note-card-actions">
+                        <button class="btn-note" onclick="iniciarEdicaoNota(${index})">✏️ Editar</button>
+                        <button class="btn-note danger" onclick="apagarNota(${index})" title="Apagar Anotação">🗑️ Apagar</button>
                     </div>
                 `;
 
-                scrollContainer.appendChild(wrapper);
+                notesScrollContainer.appendChild(card);
             });
         }
 
-        function iniciarCriacaoFlashcard() {
-            modoCriacao = true;
-            novoFrente = '';
-            novoVerso = '';
-            renderizarListaFlashcards();
-            // Dá foco no primeiro input
+        function iniciarCriacaoNota() {
+            modoEdicaoNota = true;
+            indiceEdicaoNota = null;
+            renderizarListaAnotacoes();
             setTimeout(() => {
-                const el = document.getElementById('input-frente');
+                const el = document.getElementById('input-nota-conteudo');
                 if (el) el.focus();
             }, 50);
         }
 
-        function cancelarCriacao() {
-            modoCriacao = false;
-            renderizarListaFlashcards();
+        function iniciarEdicaoNota(index) {
+            modoEdicaoNota = true;
+            indiceEdicaoNota = index;
+            renderizarListaAnotacoes();
+            setTimeout(() => {
+                const el = document.getElementById('input-nota-conteudo');
+                if (el) el.focus();
+            }, 50);
         }
 
-        function salvarNovoFlashcard() {
-            const frenteInput = document.getElementById('input-frente').value.trim();
-            const versoInput = document.getElementById('input-verso').value.trim();
+        function cancelarEdicaoNota() {
+            modoEdicaoNota = false;
+            indiceEdicaoNota = null;
+            renderizarListaAnotacoes();
+        }
 
-            if (!frenteInput || !versoInput) {
-                alert('Preencha tanto a pergunta quanto a resposta antes de salvar.');
+        function salvarNota() {
+            const tituloInput = document.getElementById('input-nota-titulo').value.trim();
+            const conteudoInput = document.getElementById('input-nota-conteudo').value.trim();
+
+            if (!conteudoInput) {
+                alert('Escreva algo na sua anotação antes de salvar.');
                 return;
             }
 
-            flashcardsAtuais.push({
-                frente: frenteInput,
-                verso: versoInput
-            });
+            if (indiceEdicaoNota !== null) {
+                anotacoesAtuais[indiceEdicaoNota] = {
+                    titulo: tituloInput,
+                    conteudo: conteudoInput
+                };
+            } else {
+                anotacoesAtuais.push({
+                    titulo: tituloInput,
+                    conteudo: conteudoInput
+                });
+            }
 
-            salvarFlashcardsNoStorage();
-            modoCriacao = false;
-            renderizarListaFlashcards();
+            salvarAnotacoesNoStorage();
+            modoEdicaoNota = false;
+            indiceEdicaoNota = null;
+            renderizarListaAnotacoes();
         }
 
-        function apagarFlashcard(index) {
-            flashcardsAtuais.splice(index, 1);
-            salvarFlashcardsNoStorage();
-            renderizarListaFlashcards();
+        function apagarNota(index) {
+            anotacoesAtuais.splice(index, 1);
+            salvarAnotacoesNoStorage();
+            renderizarListaAnotacoes();
         }
 
         function escaparHTML(str) {
@@ -1509,4 +1359,3 @@ iframe:-webkit-full-screen {
     </script>
 </body>
 </html>
-
